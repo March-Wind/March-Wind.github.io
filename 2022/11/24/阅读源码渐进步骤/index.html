@@ -16,21 +16,21 @@
   <meta name="author" content="Liu Zhiyang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="入口 unstable_scheduleCallback 调度 callback 开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)  创建 newTask(来自 unstable_scheduleCallback)  id: callback &#x2F;&#x2F; 传进来的 callback prior">
+    <meta name="description" content="源码阅读步骤： 阅读官网， 原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。   api 都使用一遍 原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。   阅读开发工作组的讨论贴 原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有助于知道">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React Schedule">
-<meta property="og:url" content="https://march-wind.github.io/2022/11/20/React-Schedule/index.html">
+<meta property="og:title" content="March的博客">
+<meta property="og:url" content="https://march-wind.github.io/2022/11/24/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/index.html">
 <meta property="og:site_name" content="March的博客">
-<meta property="og:description" content="入口 unstable_scheduleCallback 调度 callback 开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)  创建 newTask(来自 unstable_scheduleCallback)  id: callback &#x2F;&#x2F; 传进来的 callback prior">
+<meta property="og:description" content="源码阅读步骤： 阅读官网， 原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。   api 都使用一遍 原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。   阅读开发工作组的讨论贴 原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有助于知道">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-20T03:42:08.000Z">
-<meta property="article:modified_time" content="2022-11-21T07:12:58.995Z">
+<meta property="article:published_time" content="2022-11-24T08:08:39.903Z">
+<meta property="article:modified_time" content="2022-11-24T08:55:06.444Z">
 <meta property="article:author" content="Liu Zhiyang">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>React Schedule - March的博客</title>
+  <title>March的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="React Schedule"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-11-20 11:42" pubdate>
-          2022年11月20日 中午
+        <time datetime="2022-11-24 16:08" pubdate>
+          2022年11月24日 下午
         </time>
       </span>
     
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.3k 字
+          426 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          36 分钟
+          4 分钟
         
       </span>
     
@@ -271,105 +271,42 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">React Schedule</h1>
+            <h1 style="display: none"></h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="入口-unstable-scheduleCallback-调度-callback"><a href="#入口-unstable-scheduleCallback-调度-callback" class="headerlink" title="入口 unstable_scheduleCallback 调度 callback"></a>入口 unstable_scheduleCallback 调度 callback</h3><ol>
-<li><p>开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)</p>
+                <h3 id="源码阅读步骤："><a href="#源码阅读步骤：" class="headerlink" title="源码阅读步骤："></a>源码阅读步骤：</h3><ol>
+<li>阅读官网，<blockquote>
+<p>原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。</p>
+</blockquote>
 </li>
-<li><p>创建 newTask(来自 unstable_scheduleCallback)</p>
-<ul>
-<li>id:</li>
-<li>callback &#x2F;&#x2F; 传进来的 callback</li>
-<li>priorityLevel &#x2F;&#x2F; 传进来的优先级 priorityLevel</li>
-<li>startTime &#x2F;&#x2F; 上面计算的时间</li>
-<li>expirationTime &#x2F;&#x2F; 上面计算的失效时间</li>
-<li>sortIndex: -1 &#x2F;&#x2F; ??? 都是被复制为 expirationTime</li>
-</ul>
+<li>api 都使用一遍<blockquote>
+<p>原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。</p>
+</blockquote>
 </li>
-<li><p>如果是<code>定时任务(当前时间后的一定时间才执行，现在还没有进入调度的资格，放在timerQueue中)</code>，也就是未来时间执行的任务(startTime &gt; currentTime)</p>
-<ul>
-<li>将 startTime 赋值给 sortIndex(newTask.sortIndex &#x3D; startTime)</li>
-<li>将 newTask 加入<code>定时任务队列中(timerQueue)</code></li>
-<li>如果只有<code>定时任务(timeQueue)</code>,等待延迟执行时间后，触发<code>处理超时函数(handleTimeout)</code>,</li>
-<li><code>处理超时函数(handleTimeout)</code>：<ul>
-<li><code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code>：主要是从定时任务队列(timeQueue)将到时间的任务放到任务队列中(taskQueue)；没有 callback 的释放掉；没有到执行时间的任务，再等等；</li>
-<li>由于定时任务已经到执行时间，就放到任务队列，然后查看是否有任务执行，没有任务就执行该任务(唯一执行机制：用<code>isHostCallbackScheduled</code>标识来标识之前是否有<code>下一次事件循环结束立即执行任务</code>)，有就释放掉。</li>
-<li><code>请求主持回调任务(requestHostCallback)</code>：启动一个<code>调度 执行等到最后期限任务(schedulePerformWorkUntilDeadline)</code>来执行<code>刷新工作(flushWork)</code>，并且用<code>isMessageLoopRunning</code>来锁定只有一次任务在下一轮事件循环后立即执行。<code>刷新工作(flushWork)</code>是挂在<code>全局变量scheduledHostCallback</code>上，之后在<code>等到最后期限时执行任务(performWorkUntilDeadline)</code>调用，之所以放在<code>全局变量scheduledHostCallback</code>上，是为了方便扩展，执行其他函数。</li>
-<li><code>isHostCallbackScheduled</code>和<code>isMessageLoopRunning</code>作用一样， 保证一次 event loop 后只有一个任务执行,并且是串行的(保证了所有的事件占用时间是确定的，空闲也是确定的)，双重保险。</li>
-</ul>
+<li>阅读开发工作组的讨论贴<blockquote>
+<p>原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有助于知道源码为什么这么实现。看源码的时候就能减少很多疑问和卡点。</p>
+</blockquote>
 </li>
-</ul>
-</li>
-<li><p>不是定时任务，将该任务放入<code>任务队列(taskQueue)</code>中后，<code>请求主持回调任务(requestHostCallback)</code>，最终会统一在<code>等到最后期限时执行任务(performWorkUntilDeadline)</code>中执行。</p>
-</li>
-<li><p><code>等到最后期限时执行任务(performWorkUntilDeadline)</code></p>
-<ul>
-<li>内部调用<code>全局变量scheduledHostCallback</code>即是<code>flushWork(true,currentTime)</code>, 并且在函数开始时，记录下当前时间为<code>开始时间(startTime)</code>,方便后面判断是否在一帧之内还有时间，作为是否还继续执行任务的依据。</li>
-<li>得到<code>flushWork</code>返回的结果<code>是否有更多的工作(hasMoreWork)</code>，如果有更多的工作，有可能是优先级任务带来的延迟时间导致任务没有到过期时间(???)，也有可能是执行的任务不是 taskQueue 的第一个导致没删除也没处理就自动从新开始，就继续<code>调度最后期限任务(schedulePerformWorkUntilDeadline)</code>的<code>刷新任务(flushWork)</code>，</li>
-</ul>
-</li>
-<li><p><code>刷新工作(flushWork)</code></p>
-<ul>
-<li>测试环境时 enableProfiling 为 true，会加 try{}catch 包裹<code>wookLoop</code>,把报错显示在屏幕,生产环境时,直接执行<code>wookLoop</code></li>
-<li><code>工作循环(wookLoop)</code>:<ul>
-<li><code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code></li>
-<li>拿出最早的任务，如果任务存在，并且不是调度 debug 模式，那么就是正常流程<ul>
-<li>判断是否中断执行：<code>过期时间(expirationgTime)</code> 大于 <code>当前时间(currentTime)</code> ,或者<code>刷新工作</code>的开始时间到现在时间 大于 一帧时间，就中断。(hasTimeRemaining 这个字段暂时没用)。这里才用到优先级产生的过期时间，如果没有到期，就不执行任务，直到返回 true 给父级函数，然后继续<code>调度最后期限任务(schedulePerformWorkUntilDeadline)</code></li>
-<li>没有中断执行的话，就检查 task.callback 是否是个函数，如果不是直接释放掉 task；</li>
-<li>如果 task.callback 是函数，将 task.callback 的地址复制给当前局部变量 callback，然后将 task.callback 置为 null,将<code>任务的优先级(task.priorityLevel)</code>设置为<code>当前优先级(currentPriorityLevel)</code>,然后执行 callback,并传入参数过期标识(就是 true)<ul>
-<li>如果<code>callback(true)</code>返回为一个函数，将该函数赋值给<code>task.callback</code>，将再次进入循环，执行 callback 任务,再次进入循环的方法就是不从 taskQueue 中去掉。</li>
-<li>如果<code>callback(true)</code>返回不是一个函数，将剔除当前任务，也就是剔除任务队列中的第一个任务，这样就没办法循环自身了。因为当前的任务总是任务队列最优先执行的，所以就是当前执行掉的。所以就是任务队列的第一个。</li>
-<li>然后做一遍<code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code>，之后取优先级最高的任务，也就是第一个任务来继续循环。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>以防<code>当前的任务(currentTask)</code>不是 <code>任务队列(taskQueue)</code>中的第一个，那么就有可能没从<code>任务队列(taskQueue)</code>中删除掉，再次检查 currentTask 是否是 null，如果是，就返回 true 给<code>执行过期的任务(performWorkUntilDeadline)</code>,它会产生一个<code>调度过期任务(schedulePerformWorkUntilDeadline)</code>；同时如果任务没有到过期时间，是不会执行的，此时 currentTask 还是第一个任务，就返回 true 给<code>执行到过期的任务(performWorkUntilDeadline)</code>，它会产生一个<code>调度过期任务(schedulePerformWorkUntilDeadline)</code></li>
-<li>如果为空，那么只剩定时任务，就重复定时，然后触发<code>处理超时函数(handleTimeout)</code></li>
-</ul>
-</li>
-</ul>
-</li>
+<li>从入口 debug 源码：<ul>
+<li>技巧：<ol>
+<li>主要找到几个关键节点，和执行结尾，对变量的记忆，不理解也没关系</li>
+<li>对没见过的 api 或算法扫盲，增加熟悉程度。</li>
 </ol>
-<h2 id="路程上的疑惑，看完后解答"><a href="#路程上的疑惑，看完后解答" class="headerlink" title="路程上的疑惑，看完后解答"></a>路程上的疑惑，看完后解答</h2><ol>
-<li><code>定时任务</code>,<code>优先级产生的时间间隔造成的过期时间</code>，一开始是等待的<code>定时时间</code>，等到判断否是执行的时候用的是<code>过期时间</code>来检查是否大于当前时间，如果还没到，那么就返回有任务</li>
-<li>取消前一个<code>定时任务</code>，会在 workLoop 里面执行<code>提取到时间的定时任务到任务队列(advanceTimers)</code>,和执行完任务队列后也会拿<code>定时任务队列</code>再次设置<code>定时器(requestHostTimeout)</code>来再次执行<code>超时处理函数</code>来检查到期任务。</li>
+</li>
+</ul>
+</li>
+<li>直接阅读源码：<ul>
+<li>技巧：<ol>
+<li>变量命名要搞懂，库的命名一般都很精确，弄懂命名的字面意思有助于理解意图。</li>
+<li>阅读注释，有助于理解亿图。</li>
+<li>不理解的变量可以通过 vs code 的 Find All References 来找到使用位置，看看每个使用位置的上下文，有助于理解。</li>
+<li>多读 5. 通过使用 api 方式再次 debug，加深理解。</li>
 </ol>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><ol>
-<li>优先级对应的时间延迟<ul>
-<li>ImmediatePriority： -1 &#x2F;&#x2F; 也就是立即执行</li>
-<li>UserBlockingPriority： 250 &#x2F;&#x2F; 用户锁定，也就是用户一直操作的间隔</li>
-<li>IdlePriority：maxSigned31BitInt，也就是 1073741823，也就是 2^30 - 1 &#x2F;&#x2F; 空闲</li>
-<li>LowPriority：10000 &#x2F;&#x2F; 低优先级</li>
-<li>NormalPriority：5000 &#x2F;&#x2F; 正常优先级</li>
+</li>
 </ul>
 </li>
-<li>taskQueue 是同步任务队列</li>
-<li>timerQueue 定时任务，还没有执行，所以也不在调度之中，等到执行时间后才进入调度循环。</li>
-<li>scheduledHostCallback<ul>
-<li>requestHostCallback 里赋值</li>
-<li>performWorkUntilDeadline 里执行</li>
-</ul>
-</li>
-<li>schedulePerformWorkUntilDeadline 产生宏任务，将执行权力移交浏览器<ul>
-<li>关于赋值是优先 setImmediate，因为是经过一轮 event loop 立即执行，但是兼容性不好，可以使用 MessageChannel 来实现，如果没有 MessageChannel，再用 setTimeOut,但是浏览器的 setTimeout(() &#x3D;&gt; {…},0)的 delay 起码是 4，也就是会被修改成 setTimeout(() &#x3D;&gt; {…},4)，就浪费了 4ms</li>
-<li>schedulePerformWorkUntilDeadline 的回调是 performWorkUntilDeadline</li>
-</ul>
-</li>
-<li>isHostCallbackScheduled 锁定<code>下一轮事件循环立即执行的宏任务(schedulePerformWorkUntilDeadline)</code>在一次 event loop 循环只有一个任务执行。</li>
-<li>isMessageLoopRunning 跟 isHostCallbackScheduled 的作用一样，双重保险</li>
-<li>isHostTimeoutScheduled 是用来打断之前的等待任务，每次进来的任务是延迟任务，并且只有延迟任务，那么久打断上一个延迟任务的等待时间。</li>
-<li>hasTimeRemaining：代表当前帧是否还有时间留给 react</li>
-<li>这里的 callback 也就是外部传进来的执行函数也就是执行任务</li>
-<li><code>下一次时间循环结束立即执行任务</code> 就是一个执行事件的时机</li>
-</ol>
-<h2 id="堆排序-Schedule-利用最小堆来获取最早的任务"><a href="#堆排序-Schedule-利用最小堆来获取最早的任务" class="headerlink" title="堆排序(Schedule 利用最小堆来获取最早的任务)"></a>堆排序(Schedule 利用最小堆来获取最早的任务)</h2><ol>
-<li>调度就是用堆排序来获得最早过期任务的，最小堆，最小的时间戳在 index&#x3D;0 位置</li>
-<li>之所以用堆排序，是因为时间复杂度更低，最小堆构建的时间复杂度是 O(n)精确时间复杂度是 n-log(n+1),比 n 还小。每次加入一个任务之后就构建最小堆，事件复杂度是 O(n)，比冒泡排序 O(n^2)快很多。</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/March-Wind/tool/tree/master/src/algorithm/heap-sort">讲解链接</a></li>
 </ol>
 
                 
@@ -378,27 +315,6 @@
             <hr/>
             <div>
               <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/React/" class="category-chain-item">React</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
   
   
 </div>
@@ -409,8 +325,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>React Schedule</div>
-      <div>https://march-wind.github.io/2022/11/20/React-Schedule/</div>
+      <div></div>
+      <div>https://march-wind.github.io/2022/11/24/阅读源码渐进步骤/</div>
     </div>
     <div class="license-meta">
       
@@ -422,7 +338,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年11月20日</div>
+          <div>2022年11月24日</div>
         </div>
       
       
@@ -454,15 +370,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/24/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" title="">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/11/20/React-Schedule/" title="React Schedule">
+                        <span class="hidden-mobile">React Schedule</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
