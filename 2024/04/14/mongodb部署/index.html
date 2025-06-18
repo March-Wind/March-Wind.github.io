@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://march-wind.github.io/img/mongodb-logo.png">
 <meta property="article:published_time" content="2024-04-14T05:30:00.000Z">
-<meta property="article:modified_time" content="2025-06-18T10:16:35.000Z">
+<meta property="article:modified_time" content="2025-06-18T10:56:09.858Z">
 <meta property="article:author" content="Liu Zhiyang">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://march-wind.github.io/img/mongodb-logo.png">
@@ -224,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          2.6k 字
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
         
-          15 分钟
+          23 分钟
         
       </span>
     
@@ -311,6 +311,14 @@
 </ul>
 </li>
 </ol>
+<h2 id="mongoDB-安全"><a href="#mongoDB-安全" class="headerlink" title="mongoDB 安全"></a>mongoDB 安全</h2><p>MongoDB 在您的服务器上可能存在安全风险的原因可能有以下几点：</p>
+<p>默认配置：MongoDB 在默认情况下可能以不安全的方式进行配置。例如，默认情况下，MongoDB 允许匿名访问数据库，没有启用身份验证，或者使用弱密码进行访问。这可能使得攻击者可以轻易地访问和篡改您的数据库。</p>
+<p>不安全的网络连接：如果您的 MongoDB 实例通过不安全的网络连接（如未加密的网络传输）进行通信，那么在传输过程中数据可能会被窃听或篡改。建议使用 TLS&#x2F;SSL 等安全协议对 MongoDB 的网络连接进行加密，以保护数据的机密性和完整性。</p>
+<p>缺乏访问控制：MongoDB 中的访问控制是非常重要的，它可以限制哪些用户或 IP 地址可以访问数据库，并定义不同用户的权限级别。如果没有正确配置访问控制，可能会导致未经授权的用户能够访问和修改数据库。</p>
+<p>更新和补丁管理：未及时安装 MongoDB 的更新和补丁可能导致已知的安全漏洞存在于系统中，使得攻击者可以利用这些漏洞进行入侵。</p>
+<p>弱密码：使用弱密码是一种常见的安全风险。如果您的 MongoDB 实例使用弱密码（如短密码、常见密码或容易猜测的密码），那么攻击者可以通过密码猜测或暴力破解的方式入侵数据库。</p>
+<p>为了提高 MongoDB 的安全性，建议采取以下措施：</p>
+<p>使用强密码：确保为 MongoDB 设置强密码，包括足够的长度、复杂性和随机性，以抵御密码猜测和暴力破解攻击。<br>启用身份验证：在 MongoDB 中启用身份验证，要求用户提供有效的凭据才能访问数据库。<br>配置访问控制：限制数据库的访问权限，只允许授权的用户和 IP 地址访问，并根据需要定义适当的权限级别。<br>加密网络连接：使用 TLS&#x2F;SSL 等安全协议对 MongoDB 的网络连接进行加密，以防止数据被窃听或篡改。<br>及时更新和补丁：定期检查 MongoDB 的更新和补丁，并及时安装以修复已知的安全漏洞。<br>监控和日志记录：设置适当的监控和日志记录机制，及时检测潜在的安全事件或异常活动。<br>通过采取这些安全措施，您可以增强 MongoDB 在您的服务器上的安全性，并降低潜在的安全风险。同时，定期审查和评估安全性，并遵循最佳实践，是保持 MongoDB 环境安全的重要一环。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
 <p>mac: <a target="_blank" rel="noopener" href="https://juejin.cn/post/7052585815037673479">https://juejin.cn/post/7052585815037673479</a></p>
 </blockquote>
