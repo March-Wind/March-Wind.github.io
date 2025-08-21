@@ -10,7 +10,7 @@ categories:
   - 技术分享
   - 前端开发
 description: 演示透明辅助线如何实现精确的线条交互效果，支持PC端Hover和移动端点击交互
-cover: /img/echarts-hover-demo.png
+index_img: /img/echarts-logo.png
 ---
 
 本文演示了如何在 ECharts 中实现精确的线条交互效果，解决了十字线经过数据点时意外触发线条高亮的问题，同时支持 PC 端和移动端的不同交互方式。
