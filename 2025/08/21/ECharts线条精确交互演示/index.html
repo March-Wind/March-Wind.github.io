@@ -1,0 +1,1150 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Liu Zhiyang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="演示透明辅助线如何实现精确的线条交互效果，支持PC端Hover和移动端点击交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ECharts 线条精确交互演示 (PC&#x2F;移动端)">
+<meta property="og:url" content="https://march-wind.github.io/2025/08/21/ECharts%E7%BA%BF%E6%9D%A1%E7%B2%BE%E7%A1%AE%E4%BA%A4%E4%BA%92%E6%BC%94%E7%A4%BA/index.html">
+<meta property="og:site_name" content="March的博客">
+<meta property="og:description" content="演示透明辅助线如何实现精确的线条交互效果，支持PC端Hover和移动端点击交互">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-21T11:21:00.000Z">
+<meta property="article:modified_time" content="2025-08-21T11:25:16.948Z">
+<meta property="article:author" content="Liu Zhiyang">
+<meta property="article:tag" content="ECharts">
+<meta property="article:tag" content="数据可视化">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="交互设计">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ECharts 线条精确交互演示 (PC/移动端) - March的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"march-wind.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>March的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ECharts 线条精确交互演示 (PC/移动端)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-21 19:21" pubdate>
+          2025年8月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ECharts 线条精确交互演示 (PC/移动端)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文演示了如何在 ECharts 中实现精确的线条交互效果，解决了十字线经过数据点时意外触发线条高亮的问题，同时支持 PC 端和移动端的不同交互方式。</p>
+<span id="more"></span>
+
+<h2 id="🎯-演示效果"><a href="#🎯-演示效果" class="headerlink" title="🎯 演示效果"></a>🎯 演示效果</h2><div class="demo-container">
+  <div class="demo-info">
+    <h3>📋 测试说明：</h3>
+    <ul>
+      <li><strong>蓝色线条</strong>：原始线条，宽度2px，正常显示</li>
+      <li><strong>红色线条</strong>：原始线条，宽度2px，正常显示</li>
+      <li><strong>透明辅助区域</strong>：宽度12px，完全透明，用于扩大交互检测</li>
+      <li><strong>PC端测试重点</strong>：只有鼠标接近线条时才高亮，移动十字线经过数据点不会高亮</li>
+      <li><strong>移动端测试重点</strong>：点击线条附近可高亮切换，支持取消和切换(F12切换手机模式，然后刷新)</li>
+    </ul>
+  </div>
+
+  <div class="demo-highlight">
+    💡 <strong>PC端测试</strong>：①鼠标hover线条附近→线条高亮 ②十字线经过→不高亮！<br />
+    📱 <strong>移动端测试</strong>：①点击线条附近→高亮切换 ②再次点击→取消高亮！
+  </div>
+
+  <div id="chart" class="chart-container"></div>
+</div>
+
+<h2 id="🔧-实现原理"><a href="#🔧-实现原理" class="headerlink" title="🔧 实现原理"></a>🔧 实现原理</h2><h3 id="原理-1：禁用-axisPointer-触发系列强调效果"><a href="#原理-1：禁用-axisPointer-触发系列强调效果" class="headerlink" title="原理 1：禁用 axisPointer 触发系列强调效果"></a>原理 1：禁用 axisPointer 触发系列强调效果</h3><p>全局禁用<code>axisPointer</code>触发系列强调效果，确保十字线经过数据点时不会触发线条高亮：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 全局禁用axisPointer触发系列强调效果</span><br><span class="hljs-attr">axisPointer</span>: &#123;<br>  <span class="hljs-attr">triggerEmphasis</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// 关键：全局禁用axisPointer触发系列强调效果</span><br>&#125;<br><br><span class="hljs-comment">// 每个线条里的triggerEmphasis: false也需要设置</span><br><span class="hljs-attr">series</span>: [<br>  &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-attr">triggerEmphasis</span>: <span class="hljs-literal">false</span>,<br>  &#125;<br>]<br></code></pre></td></tr></table></figure>
+
+<h3 id="原理-2：透明辅助线扩大交互区域"><a href="#原理-2：透明辅助线扩大交互区域" class="headerlink" title="原理 2：透明辅助线扩大交互区域"></a>原理 2：透明辅助线扩大交互区域</h3><p>为每条线创建同名的透明辅助粗线（宽 12px），比原始线条宽 6 倍，用户看不见但能响应交互事件：</p>
+<ul>
+<li><strong>PC 端</strong>：hover 辅助线 → 高亮原始线，mouseout→ 恢复正常</li>
+<li><strong>移动端</strong>：点击辅助线&#x2F;原始线 → 切换高亮状态，支持取消和切换</li>
+<li><strong>小技巧</strong>：辅助线置于底层（z: -1），用户看不见但能响应交互</li>
+<li><strong>小技巧</strong>：通过 dispatchAction 高亮同名的原始线条</li>
+</ul>
+<h2 id="💻-完整代码实现"><a href="#💻-完整代码实现" class="headerlink" title="💻 完整代码实现"></a>💻 完整代码实现</h2><style>
+.demo-container {
+  margin: 20px 0;
+}
+
+.demo-info {
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.demo-info h3 {
+  margin: 0 0 10px 0;
+  color: #1976d2;
+}
+
+.demo-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.demo-info li {
+  margin: 5px 0;
+  color: #555;
+}
+
+.demo-highlight {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+  text-align: center;
+  color: #856404;
+  font-weight: bold;
+}
+
+.chart-container {
+  width: 100%;
+  height: 500px;
+  margin: 20px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 400px;
+  }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js"></script>
+<script>
+// 等待页面加载完成
+document.addEventListener('DOMContentLoaded', function() {
+  // 检查ECharts是否已加载
+  if (typeof echarts === 'undefined') {
+    console.error('ECharts未正确加载');
+    return;
+  }
+
+  // 初始化ECharts实例
+  const chartDom = document.getElementById('chart');
+  if (!chartDom) {
+    console.error('找不到chart容器元素');
+    return;
+  }
+
+  const myChart = echarts.init(chartDom);
+
+  // 生成示例数据
+  const generateData = (base, variance) => {
+    const data = [];
+    for (let i = 0; i < 50; i++) {
+      data.push([
+        i,
+        base + Math.sin(i * 0.2) * variance + Math.random() * 20 - 10,
+      ]);
+    }
+    return data;
+  };
+
+  const data1 = generateData(100, 30); // 蓝色线数据
+  const data2 = generateData(150, 40); // 红色线数据
+
+  const option = {
+    title: {
+      text: '线条精确交互测试 (PC端Hover / 移动端点击)',
+      left: 'center',
+      textStyle: {
+        fontSize: 16,
+      },
+    },
+    // 🎯 全局axisPointer配置 - 禁用自动强调
+    axisPointer: {
+      triggerEmphasis: false, // 关键：全局禁用axisPointer触发系列强调效果
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#999',
+        },
+        triggerEmphasis: false, // 🎯 关键：禁用axisPointer触发系列强调效果
+      },
+    },
+    legend: {
+      data: ['趋势线A', '趋势线B'],
+      top: 40,
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      top: '15%',
+      containLabel: true,
+    },
+    xAxis: {
+      type: 'value',
+      name: '时间点',
+    },
+    yAxis: {
+      type: 'value',
+      name: '数值',
+    },
+    series: [
+      // === 原始线条A ===
+      {
+        name: '趋势线A',
+        type: 'line',
+        data: data1,
+        smooth: true,
+        lineStyle: {
+          width: 2,
+          color: '#1890ff',
+        },
+        itemStyle: {
+          color: '#1890ff',
+        },
+        emphasis: {
+          scale: false,
+          lineStyle: {
+            width: 4,
+            shadowColor: 'rgba(24, 144, 255, 0.8)',
+            shadowBlur: 8,
+            shadowOffsetY: 2,
+          },
+        },
+        showSymbol: false,
+        hoverAnimation: true,
+        triggerLineEvent: true,
+        triggerEmphasis: false, // 🎯 关键：禁用被axisPointer自动强调
+      },
+      // === 透明辅助线A ===
+      {
+        name: '趋势线A', // 🎯 关键：同名！
+        type: 'line',
+        data: data1, // 🎯 关键：同数据！
+        smooth: true,
+        lineStyle: {
+          width: 12, // 🚀 6倍宽度用于hover检测
+          color: 'transparent', // 👻 完全透明
+          opacity: 0,
+        },
+        itemStyle: {
+          color: 'transparent',
+          opacity: 0,
+        },
+        showInLegend: false, // 🚫 不显示在图例中
+        showSymbol: false,
+        hoverAnimation: false,
+        triggerLineEvent: true,
+        triggerEmphasis: false, // 🎯 关键：禁用被axisPointer自动强调
+        z: -1, // 🎯 底层，不遮挡其他元素
+      },
+
+      // === 原始线条B ===
+      {
+        name: '趋势线B',
+        type: 'line',
+        data: data2,
+        smooth: true,
+        lineStyle: {
+          width: 2,
+          color: '#ff4d4f',
+        },
+        itemStyle: {
+          color: '#ff4d4f',
+        },
+        emphasis: {
+          scale: false,
+          lineStyle: {
+            width: 4,
+            shadowColor: 'rgba(255, 77, 79, 0.8)',
+            shadowBlur: 8,
+            shadowOffsetY: 2,
+          },
+        },
+        showSymbol: false,
+        hoverAnimation: true,
+        triggerLineEvent: true,
+        triggerEmphasis: false, // 🎯 关键：禁用被axisPointer自动强调
+      },
+      // === 透明辅助线B ===
+      {
+        name: '趋势线B', // 🎯 关键：同名！
+        type: 'line',
+        data: data2, // 🎯 关键：同数据！
+        smooth: true,
+        lineStyle: {
+          width: 12, // 🚀 6倍宽度用于hover检测
+          color: 'transparent', // 👻 完全透明
+          opacity: 0,
+        },
+        itemStyle: {
+          color: 'transparent',
+          opacity: 0,
+        },
+        showInLegend: false, // 🚫 不显示在图例中
+        showSymbol: false,
+        hoverAnimation: false,
+        triggerLineEvent: true,
+        triggerEmphasis: false, // 🎯 关键：禁用被axisPointer自动强调
+        z: -1, // 🎯 底层，不遮挡其他元素
+      },
+    ],
+  };
+
+  // 设置图表配置
+  myChart.setOption(option);
+
+  // 🎯 检测是否为移动设备
+  const isMobile =
+    /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth <= 768;
+
+  let currentHighlighted = null; // 记录当前高亮的系列
+
+  // 🎯 关键事件处理：实现精确的hover联动
+  myChart.on('mouseover', function (params) {
+    if (isMobile) return; // 移动端跳过hover事件
+
+    console.log('🎯 Hover事件触发:', params.seriesName);
+
+    if (params.seriesName) {
+      // 高亮所有同名系列（原始线条会被高亮）
+      myChart.dispatchAction({
+        type: 'highlight',
+        seriesName: params.seriesName,
+      });
+
+      // 同时高亮图例
+      myChart.dispatchAction({
+        type: 'legendHighlight',
+        name: params.seriesName,
+      });
+
+      // 在页面上显示提示
+      showHoverInfo(params.seriesName, isMobile ? '点击高亮' : '高亮');
+    }
+  });
+
+  myChart.on('mouseout', function (params) {
+    if (isMobile) return; // 移动端跳过hover事件
+
+    console.log('🔄 Mouse离开:', params.seriesName);
+
+    if (params.seriesName) {
+      // 取消高亮
+      myChart.dispatchAction({
+        type: 'downplay',
+        seriesName: params.seriesName,
+      });
+
+      myChart.dispatchAction({
+        type: 'legendDownplay',
+        name: params.seriesName,
+      });
+
+      // 清除提示
+      showHoverInfo(params.seriesName, '恢复');
+    }
+  });
+
+  // 🎯 点击事件处理（PC端和移动端）
+  myChart.on('click', function (params) {
+    console.log('📱 点击事件触发:', params.seriesName, '移动端:', isMobile);
+
+    if (params.seriesName) {
+      // 点击到了线条
+      if (isMobile) {
+        // 移动端：点击切换高亮状态
+        if (currentHighlighted === params.seriesName) {
+          // 当前系列已高亮，取消高亮
+          myChart.dispatchAction({
+            type: 'downplay',
+            seriesName: params.seriesName,
+          });
+          myChart.dispatchAction({
+            type: 'legendDownplay',
+            name: params.seriesName,
+          });
+          currentHighlighted = null;
+          showMobileInfo(params.seriesName, '取消高亮');
+        } else {
+          // 先清除之前的高亮
+          if (currentHighlighted) {
+            myChart.dispatchAction({
+              type: 'downplay',
+              seriesName: currentHighlighted,
+            });
+            myChart.dispatchAction({
+              type: 'legendDownplay',
+              name: currentHighlighted,
+            });
+          }
+
+          // 高亮新的系列
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesName: params.seriesName,
+          });
+          myChart.dispatchAction({
+            type: 'legendHighlight',
+            name: params.seriesName,
+          });
+          currentHighlighted = params.seriesName;
+          showMobileInfo(params.seriesName, '点击高亮');
+        }
+      } else {
+        // PC端：点击选中图例
+        myChart.dispatchAction({
+          type: 'legendToggleSelect',
+          name: params.seriesName,
+        });
+        showHoverInfo(params.seriesName, '图例切换');
+      }
+    } else if (isMobile && currentHighlighted) {
+      // 移动端：点击空白区域，取消当前高亮
+      myChart.dispatchAction({
+        type: 'downplay',
+        seriesName: currentHighlighted,
+      });
+      myChart.dispatchAction({
+        type: 'legendDownplay',
+        name: currentHighlighted,
+      });
+      showMobileInfo(currentHighlighted, '取消高亮');
+      currentHighlighted = null;
+    }
+  });
+
+  // 显示hover状态信息（PC端）
+  function showHoverInfo(seriesName, action) {
+    const info = document.querySelector('.demo-highlight');
+    if (!info) return;
+    
+    if (action === '高亮' || action === '点击高亮') {
+      info.innerHTML = `✨ <strong>${seriesName}</strong> 正在高亮显示！`;
+      info.style.background = '#d4edda';
+      info.style.borderColor = '#c3e6cb';
+      info.style.color = '#155724';
+    } else if (action === '图例切换') {
+      info.innerHTML = `🔄 <strong>${seriesName}</strong> 图例状态已切换！`;
+      info.style.background = '#e3f2fd';
+      info.style.borderColor = '#bbdefb';
+      info.style.color = '#1565c0';
+    } else {
+      info.innerHTML = isMobile
+        ? '📱 <strong>移动端</strong>：点击线条附近→高亮切换！再次点击→取消高亮！点击空白→取消'
+        : '💡 <strong>PC端</strong>：鼠标hover线条附近→高亮 / 十字线经过→不高亮！';
+      info.style.background = '#fff3cd';
+      info.style.borderColor = '#ffeaa7';
+      info.style.color = '#856404';
+    }
+  }
+
+  // 显示移动端状态信息
+  function showMobileInfo(seriesName, action) {
+    const info = document.querySelector('.demo-highlight');
+    if (!info) return;
+    
+    if (action === '点击高亮') {
+      info.innerHTML = `📱 <strong>${seriesName}</strong> 已高亮！再次点击可取消`;
+      info.style.background = '#d4edda';
+      info.style.borderColor = '#c3e6cb';
+      info.style.color = '#155724';
+    } else if (action === '取消高亮') {
+      info.innerHTML = `📱 <strong>${seriesName}</strong> 高亮已取消！点击其他线条可高亮`;
+      info.style.background = '#f8d7da';
+      info.style.borderColor = '#f5c6cb';
+      info.style.color = '#721c24';
+    }
+  }
+
+  // 响应式处理
+  window.addEventListener('resize', function () {
+    if (myChart && !myChart.isDisposed()) {
+      myChart.resize();
+    }
+  });
+
+  // 添加说明文字
+  console.log('📊 Demo加载完成！');
+  console.log('🎯 测试要点：');
+  if (isMobile) {
+    console.log('📱 移动端模式：');
+    console.log('1. 点击线条附近 → 高亮切换');
+    console.log('2. 再次点击同一线条 → 取消高亮');
+    console.log('3. 点击其他线条 → 切换到新线条高亮');
+    console.log('4. 点击空白区域 → 取消当前高亮');
+  } else {
+    console.log('💻 PC端模式：');
+    console.log('1. 鼠标hover线条附近 → 线条高亮');
+    console.log('2. 十字线经过数据点 → 线条不高亮');
+    console.log('3. 鼠标离开 → 恢复正常');
+  }
+  console.log('5. 透明辅助线扩大了交互检测范围（12px）');
+
+  // 🎯 初始化提示信息
+  showHoverInfo('', '初始化');
+});
+</script>
+
+<h2 id="📝-技术要点总结"><a href="#📝-技术要点总结" class="headerlink" title="📝 技术要点总结"></a>📝 技术要点总结</h2><ol>
+<li><strong>全局配置</strong>：通过 <code>axisPointer.triggerEmphasis: false</code> 禁用十字线触发高亮</li>
+<li><strong>透明辅助线</strong>：创建同名透明线条，宽度 6 倍，用于扩大交互区域</li>
+<li><strong>设备适配</strong>：自动检测移动设备，采用不同的交互方式</li>
+<li><strong>状态管理</strong>：跟踪当前高亮状态，支持切换和取消</li>
+<li><strong>响应式设计</strong>：图表自动适应容器大小变化</li>
+</ol>
+<p>这种方案完美解决了 ECharts 线条交互的精确性问题，无论在 PC 端还是移动端都能提供优秀的用户体验！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/" class="category-chain-item">前端开发</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ECharts/">#ECharts</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/">#数据可视化</a>
+      
+        <a href="/tags/JavaScript/">#JavaScript</a>
+      
+        <a href="/tags/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1/">#交互设计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ECharts 线条精确交互演示 (PC/移动端)</div>
+      <div>https://march-wind.github.io/2025/08/21/ECharts线条精确交互演示/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Liu Zhiyang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/15/%E9%83%A8%E7%BD%B2paddlex,%E8%AF%86%E5%88%AB%E6%96%87%E5%AD%97/" title="部署paddlex,识别文字">
+                        <span class="hidden-mobile">部署paddlex,识别文字</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      沪ICP备2024044145号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502400802"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>沪公网安备31011502400802</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
