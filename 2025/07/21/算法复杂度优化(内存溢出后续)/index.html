@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Liu Zhiyang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="📊 算法复杂度优化(内存溢出后续) 🚨 – – 问题描述 – – 在做设计稿转布局代码时，采用的任意个数元素形成若干个组合的方式来识别布局。在做 k&#x3D;33 时，也就是 3,262,623(约 326 万)个组合的时候，导致内存溢出了。因为占用内存接近 1G。(8 * 33 + 32) * 3262623 &#x3D; 992,637,392B &#x3D; 969,372 KB &#x3D; 946.7 MB &#x3D; 0.92">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法复杂度优化(内存溢出后续)">
+<meta property="og:url" content="https://march-wind.github.io/2025/07/21/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%BC%98%E5%8C%96(%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E7%BB%AD)/index.html">
+<meta property="og:site_name" content="March的博客">
+<meta property="og:description" content="📊 算法复杂度优化(内存溢出后续) 🚨 – – 问题描述 – – 在做设计稿转布局代码时，采用的任意个数元素形成若干个组合的方式来识别布局。在做 k&#x3D;33 时，也就是 3,262,623(约 326 万)个组合的时候，导致内存溢出了。因为占用内存接近 1G。(8 * 33 + 32) * 3262623 &#x3D; 992,637,392B &#x3D; 969,372 KB &#x3D; 946.7 MB &#x3D; 0.92">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://march-wind.github.io/img/algorithm.png">
+<meta property="article:published_time" content="2025-07-21T09:13:00.000Z">
+<meta property="article:modified_time" content="2025-09-26T09:56:42.614Z">
+<meta property="article:author" content="Liu Zhiyang">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://march-wind.github.io/img/algorithm.png">
+  
+  
+  
+  <title>算法复杂度优化(内存溢出后续) - March的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"march-wind.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>March的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="算法复杂度优化(内存溢出后续)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-21 17:13" pubdate>
+          2025年7月21日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">算法复杂度优化(内存溢出后续)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="📊-算法复杂度优化-内存溢出后续">📊 算法复杂度优化(内存溢出后续)</h2>
+<p><strong>🚨 – – 问题描述 – –</strong><br>
+在做<code>设计稿转布局代码</code>时，采用的任意个数元素形成若干个<code>组合</code>的方式来识别布局。在做 k=33 时，也就是 3,262,623(约 326 万)个组合的时候，导致内存溢出了。因为占用内存接近 1G。<code>(8 * 33 + 32) * 3262623 = 992,637,392B = 969,372 KB = 946.7 MB = 0.92 GB</code>。虽然可以生成一个组合就执行判断布局，但是要遍历$2^n$个组合，是指数级的复杂度，当 n=39 时， 有 5497 亿种组合，一台 mac pro(8 核 16G)跑 326 万次要 10 分钟以上。所以只能修改算法，目前组合的方式，生成组合的算法是指数级，是无法再日常生产中跑的。</p>
+<p><strong>🔍 – – 错误中进步 – –</strong></p>
+<ol>
+<li>
+<p><strong>💭 思考：</strong> 一开始的思路是在想，不是每个组合都可能形成布局的，也就是有一些组合很明显一定不行形成组合，那么缩小组合的个数，就能降低算法复杂度，不用枚举所有的组合。</p>
+</li>
+<li>
+<p><strong>🎯 发现特征：</strong> 只有相邻的元素才有可能形成组合。把相邻的元素使用链表连起来，其实这种形式在数据结构上叫<code>工程邻接矩阵</code>,可以把相邻关系表达为<code>邻接矩阵</code>，去遍历每个邻接<code>路径</code>就行。记录在四个方向上邻接的节点，然后把关系表达为邻接矩阵。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 🔗 链的节点类型</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ChainNode</span> &#123;<br>  <span class="hljs-attr">value</span>: <span class="hljs-title class_">RelationalLayoutEntity</span> | <span class="hljs-title class_">LayoutBlock</span>;<br>  <span class="hljs-attr">block</span>: <span class="hljs-title class_">Block</span>;<br>  index?: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">top</span>: <span class="hljs-title class_">ChainNode</span>[]; <span class="hljs-comment">// 上方的邻接node</span><br>  <span class="hljs-attr">bottom</span>: <span class="hljs-title class_">ChainNode</span>[]; <span class="hljs-comment">// 下方的邻接node</span><br>  <span class="hljs-attr">left</span>: <span class="hljs-title class_">ChainNode</span>[]; <span class="hljs-comment">// 左边的邻接node</span><br>  <span class="hljs-attr">right</span>: <span class="hljs-title class_">ChainNode</span>[]; <span class="hljs-comment">// 右边的邻接node</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>🌐 探索邻接矩阵：</strong><br>
+邻接矩阵，本身是一种图关系，分为好几种：有向图(单向就是一条路径)、无向图(A 和 B 相连，只是一条路径)、连通图(任意两个节点之间都存在路径) 、 非连通图(存在无法到达的节点，图被分为多个连通分量)、完全图(任意两个不同节点都有边连接)、树 (连通的无环无向图，n 个节点有 n-1 条边)、有向无环图(从 A 发出，怎么走都走不到 A)、有向有环图(从 A 绕一圈，还能走到 A).虽然有这么多种，但是遍历方法就一种，只要使用邻接矩阵，那么就一种遍历方法，如下(enumerateAllSimplePaths):<br>
+📊 邻接矩阵：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 🔢 邻接矩阵数据结构</span><br><span class="hljs-keyword">const</span> adjMatrix = [<br>  <span class="hljs-comment">// 1  2  3  4  5</span><br>  [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], <span class="hljs-comment">// 1</span><br>  [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], <span class="hljs-comment">// 2</span><br>  [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], <span class="hljs-comment">// 3</span><br>  [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], <span class="hljs-comment">// 4</span><br>  [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], <span class="hljs-comment">// 5</span><br>];<br></code></pre></td></tr></table></figure>
+<p>🔄 遍历邻接矩阵：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs xquery">  <span class="hljs-keyword">function</span> enumerateAllSimplePaths(adjMatrix:<span class="hljs-built_in"> number</span>[][]):<span class="hljs-built_in"> number</span>[][] &#123;<br>    const n = adjMatrix.length;<br>    const results:<span class="hljs-built_in"> number</span>[][] = [];<br>    const visited:<span class="hljs-built_in"> boolean</span>[] = new Array(n).fill<span class="hljs-built_in">(false</span>);<br><br>  <span class="hljs-keyword">function</span> dfs(current:<span class="hljs-built_in"> number</span>, target:<span class="hljs-built_in"> number</span>,<span class="hljs-built_in"> path</span>:<span class="hljs-built_in"> number</span>[]) &#123;<br>    <span class="hljs-keyword">if</span> (current === target) &#123;<br>      results.push([..<span class="hljs-built_in">.path</span>]);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    visited[current] =<span class="hljs-built_in"> true</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> <span class="hljs-keyword">next</span> = <span class="hljs-number">0</span>; <span class="hljs-keyword">next</span> &lt; n; <span class="hljs-keyword">next</span>++) &#123;<br>      <span class="hljs-keyword">if</span> (adjMatrix[current][<span class="hljs-keyword">next</span>] === <span class="hljs-number">1</span> &amp;&amp; !visited[<span class="hljs-keyword">next</span>]) &#123;<br>       <span class="hljs-built_in"> path</span>.push(<span class="hljs-keyword">next</span>);<br>        dfs(<span class="hljs-keyword">next</span>, target,<span class="hljs-built_in"> path</span>);<br>       <span class="hljs-built_in"> path</span>.pop();<br>      &#125;<br>    &#125;<br>    visited[current] =<span class="hljs-built_in"> false</span>;<br>  &#125;<br><br>  /**<br>   * 枚举所有 (i, j) 顶点对，i &lt; j 保证不重复<br>   * i 是起点<br>   * j 是终点（目标）<br>   *<span class="hljs-built_in"> path</span> 是当前已经走过的路径（起始只有 [i]）<br>   */<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) &#123;<br>      dfs(i, j, [i]);<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> results;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这个算法的神奇之处就是对不同的种类的图，得出来的时间复杂度是不一样的，针对有向有环图，时间复杂度普通情况是多项式级别的，最坏的是 n^2 * 2^n，虽然降低了时间复杂度，但是必然避免不了最欢的情况。所以丢弃了这个方案。同时也探索了 SCC 分治方法等其他枚举算法，时间复杂度也都很高，并且很路径数量是强相关的。</p>
+</li>
+</ol>
+<p><strong>✨ – – 解决方案 – –</strong><br>
+🎯 调整思路，能被放在一起识别布局的，一定是被一个外接矩形框包含的，问题也就转换成只要枚举出所有的<code>包含任意个数元素矩形框</code>就行了，枚举出所有的包含矩形框,可以使用计算任意两个元素的外接矩形框，然后去重就行了。时间复杂度也就是 n^2,当然还有其他的条件限制外接矩形能不能成立，最终的时间复杂度是 n^3.下面是伪代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">enumerateRectangleCombinations</span>(<span class="hljs-params"></span><br><span class="hljs-params">  entity: Entity <span class="hljs-comment">// 包含所有宽高信息，以及唯一标识</span></span><br><span class="hljs-params"></span>)&#123;<br><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; entity.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = i + <span class="hljs-number">1</span>; j &lt; entity.<span class="hljs-property">length</span>; j++) &#123;<br>      <span class="hljs-keyword">const</span> node1 = entity[i];<br>      <span class="hljs-keyword">const</span> node2 = entity[j];<br><br>      <span class="hljs-comment">// 计算两个节点形成的矩形边界</span><br>      <span class="hljs-keyword">const</span> rectangleBounds = <span class="hljs-title function_">calculateRectangleBounds</span>(node1, node2);<br><br>      <span class="hljs-comment">// 找出完全包含在矩形内的所有节点</span><br>      <span class="hljs-keyword">const</span> <span class="hljs-attr">containedNodes</span>: <span class="hljs-title class_">Entity</span>[] = [];<br>      <span class="hljs-keyword">const</span> <span class="hljs-attr">containedIndices</span>: number[] = [];<br><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> k = <span class="hljs-number">0</span>; k &lt; <span class="hljs-title class_">Entity</span>.<span class="hljs-property">length</span>; k++) &#123;<br>        <span class="hljs-keyword">const</span> node = <span class="hljs-title class_">Entity</span>[k];<br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isNodeContainedInRectangle</span>(node, rectangleBounds)) &#123;<br>          containedNodes.<span class="hljs-title function_">push</span>(node);<br>          containedIndices.<span class="hljs-title function_">push</span>(k);<br>        &#125;<br>      &#125;<br><br>      <span class="hljs-comment">// 检查矩形能不能成立</span><br>      <span class="hljs-keyword">let</span> flag = <span class="hljs-literal">false</span>;<br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> k = <span class="hljs-number">0</span>; k &lt; entityOrBlockSet.<span class="hljs-property">length</span>; k++) &#123;<br>        <span class="hljs-keyword">const</span> node = entityOrBlockSet[k];<br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isNodeIntersectingWithRectangle</span>(node, rectangleBounds)) &#123;<br>          flag = <span class="hljs-literal">true</span>;<br>          <span class="hljs-keyword">break</span>;<br>        &#125;<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>成功将指数级的时间复杂度降到 n^3，撒花 🎉。</p>
+<h2 id="📝-总结">📝 总结</h2>
+<p>💡 优化算法可以从两个方面入手：</p>
+<ol>
+<li>通过优化<strong>摆弄</strong><code>抽象的实物</code>的方式来使<strong>摆弄</strong>的次数少</li>
+<li>在解决问题上面，减少可能性方案的数量</li>
+</ol>
+<p>🔥 今天对第 2 条感受很深。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/nodejs/" class="category-chain-item">nodejs</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>算法复杂度优化(内存溢出后续)</div>
+      <div>https://march-wind.github.io/2025/07/21/算法复杂度优化(内存溢出后续)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Liu Zhiyang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/05/nodejs%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA/" title="nodejs 内存溢出">
+                        <span class="hidden-mobile">nodejs 内存溢出</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      沪ICP备2024044145号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502400802"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>沪公网安备31011502400802</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -16,23 +16,23 @@
   <meta name="author" content="Liu Zhiyang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="入口 unstable_scheduleCallback 调度 callback   开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)   创建 newTask(来自 unstable_scheduleCallback)  id: callback &#x2F;&#x2F; 传进来的 callback priorityLevel &#x2F;&#x2F;">
+    <meta name="description" content="安装  openCloudOS 9, 安装时选择 redHat,选择后会自动显示redHat&#x2F;centos x64 解压后，bin 文件夹下之前有mongo.conf，mongodb 8.09版本没有，可以自己在 bin 文件夹下创建mongo.conf,启动时.&#x2F;mongod --config mongodb.conf &#x2F;www&#x2F;server&#x2F;mongodb&#x2F;bin&#x2F;mongod: error">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React Schedule">
-<meta property="og:url" content="https://march-wind.github.io/2023/11/20/React-Schedule/index.html">
+<meta property="og:title" content="mongodb在腾讯云部署和使用">
+<meta property="og:url" content="https://march-wind.github.io/2024/05/14/mongodb%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="March的博客">
-<meta property="og:description" content="入口 unstable_scheduleCallback 调度 callback   开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)   创建 newTask(来自 unstable_scheduleCallback)  id: callback &#x2F;&#x2F; 传进来的 callback priorityLevel &#x2F;&#x2F;">
+<meta property="og:description" content="安装  openCloudOS 9, 安装时选择 redHat,选择后会自动显示redHat&#x2F;centos x64 解压后，bin 文件夹下之前有mongo.conf，mongodb 8.09版本没有，可以自己在 bin 文件夹下创建mongo.conf,启动时.&#x2F;mongod --config mongodb.conf &#x2F;www&#x2F;server&#x2F;mongodb&#x2F;bin&#x2F;mongod: error">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://march-wind.github.io/img/react-logo.png">
-<meta property="article:published_time" content="2023-11-20T03:42:08.000Z">
-<meta property="article:modified_time" content="2025-06-18T09:43:34.133Z">
+<meta property="og:image" content="https://march-wind.github.io/img/mongodb-logo.png">
+<meta property="article:published_time" content="2024-05-14T03:30:00.000Z">
+<meta property="article:modified_time" content="2025-09-26T09:57:20.576Z">
 <meta property="article:author" content="Liu Zhiyang">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://march-wind.github.io/img/react-logo.png">
+<meta name="twitter:image" content="https://march-wind.github.io/img/mongodb-logo.png">
   
   
   
-  <title>React Schedule - March的博客</title>
+  <title>mongodb在腾讯云部署和使用 - March的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -201,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="React Schedule"></span>
+            <span id="subtitle" data-typed-text="在AI领域很多场景需要识别图文中的文字"></span>
           
         </div>
 
@@ -212,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-11-20 11:42" pubdate>
-          2023年11月20日 中午
+        <time datetime="2024-05-14 11:30" pubdate>
+          2024年5月14日 中午
         </time>
       </span>
     
@@ -224,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.1k 字
+          2.6k 字
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
         
-          35 分钟
+          22 分钟
         
       </span>
     
@@ -273,123 +273,84 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">React Schedule</h1>
+            <h1 style="display: none">在AI领域很多场景需要识别图文中的文字</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="入口-unstable-scheduleCallback-调度-callback">入口 unstable_scheduleCallback 调度 callback</h3>
+                <h2 id="安装">安装</h2>
+<ol>
+<li>openCloudOS 9, 安装时选择 redHat,选择后会自动显示<code>redHat/centos x64</code></li>
+<li>解压后，bin 文件夹下之前有<code>mongo.conf</code>，<code>mongodb 8.09</code>版本没有，可以自己在 bin 文件夹下创建<code>mongo.conf</code>,启动时<code>./mongod --config mongodb.conf</code></li>
+<li><code>/www/server/mongodb/bin/mongod: error while loading shared libraries: libcrypto.so.1.1: cannot open shared object file: No such file or directory</code>
+<ol>
+<li>sudo dnf install -y compat-openssl11</li>
+<li>find / -name &quot;libcrypto.so.1.1&quot; 2&gt;/dev/null
+<ol>
+<li>若输出类似 /usr/lib64/libcrypto.so.1.1，则成功</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="启动-mongodb">启动 mongodb</h2>
 <ol>
 <li>
-<p>开始时间(startTime = 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)</p>
+<p>安装好 mongodb</p>
 </li>
 <li>
-<p>创建 newTask(来自 unstable_scheduleCallback)</p>
-<ul>
-<li>id:</li>
-<li>callback // 传进来的 callback</li>
-<li>priorityLevel // 传进来的优先级 priorityLevel</li>
-<li>startTime // 上面计算的时间</li>
-<li>expirationTime // 上面计算的失效时间</li>
-<li>sortIndex: -1 // ??? 都是被复制为 expirationTime</li>
-</ul>
+<p>创建 db 目录和 log 目录，log 目录里面有 mongo.log，是 logpath</p>
 </li>
 <li>
-<p>如果是<code>定时任务(当前时间后的一定时间才执行，现在还没有进入调度的资格，放在timerQueue中)</code>，也就是未来时间执行的任务(startTime &gt; currentTime)</p>
-<ul>
-<li>将 startTime 赋值给 sortIndex(newTask.sortIndex = startTime)</li>
-<li>将 newTask 加入<code>定时任务队列中(timerQueue)</code></li>
-<li>如果只有<code>定时任务(timeQueue)</code>,等待延迟执行时间后，触发<code>处理超时函数(handleTimeout)</code>,</li>
-<li><code>处理超时函数(handleTimeout)</code>：
-<ul>
-<li><code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code>：主要是从定时任务队列(timeQueue)将到时间的任务放到任务队列中(taskQueue)；没有 callback 的释放掉；没有到执行时间的任务，再等等；</li>
-<li>由于定时任务已经到执行时间，就放到任务队列，然后查看是否有任务执行，没有任务就执行该任务(唯一执行机制：用<code>isHostCallbackScheduled</code>标识来标识之前是否有<code>下一次事件循环结束立即执行任务</code>)，有就释放掉。</li>
-<li><code>请求主持回调任务(requestHostCallback)</code>：启动一个<code>调度 执行等到最后期限任务(schedulePerformWorkUntilDeadline)</code>来执行<code>刷新工作(flushWork)</code>，并且用<code>isMessageLoopRunning</code>来锁定只有一次任务在下一轮事件循环后立即执行。<code>刷新工作(flushWork)</code>是挂在<code>全局变量scheduledHostCallback</code>上，之后在<code>等到最后期限时执行任务(performWorkUntilDeadline)</code>调用，之所以放在<code>全局变量scheduledHostCallback</code>上，是为了方便扩展，执行其他函数。</li>
-<li><code>isHostCallbackScheduled</code>和<code>isMessageLoopRunning</code>作用一样， 保证一次 event loop 后只有一个任务执行,并且是串行的(保证了所有的事件占用时间是确定的，空闲也是确定的)，双重保险。</li>
-</ul>
-</li>
-</ul>
+<p>使用<code>mongo.conf</code>文件进行配置参数</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 设置数据文件的存放目录</span><br><span class="hljs-attr">storage:</span><br>  <span class="hljs-attr">dbPath:</span> <span class="hljs-string">../data</span><br><br><span class="hljs-comment"># 设置日志文件的存放目录及其日志文件名</span><br><span class="hljs-attr">systemLog:</span><br>  <span class="hljs-attr">destination:</span> <span class="hljs-string">file</span><br>  <span class="hljs-attr">path:</span> <span class="hljs-string">../logs/mongodb.log</span><br>  <span class="hljs-attr">logRotate:</span> <span class="hljs-string">reopen</span><br>  <span class="hljs-attr">logAppend:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">verbosity:</span> <span class="hljs-number">0</span><br><br><span class="hljs-comment"># 设置端口号（默认的端口号是 27017）</span><br><span class="hljs-attr">net:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">27099</span><br>  <span class="hljs-attr">bindIp:</span> <span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span><br><br><span class="hljs-comment"># 设置为以守护进程的方式运行，即在后台运行</span><br><span class="hljs-comment"># fork: true</span><br><br><span class="hljs-comment"># 防止通过HTTP进行访问，3版本以后就没有这个参数了</span><br><span class="hljs-comment"># nohttpinterface: true</span><br><br><span class="hljs-comment"># 启用身份验证,在未创建校验用户之前，需要关闭</span><br><span class="hljs-attr">security:</span><br>  <span class="hljs-attr">authorization:</span> <span class="hljs-string">enabled</span><br><br><span class="hljs-attr">setParameter:</span><br>  <span class="hljs-attr">enableLocalhostAuthBypass:</span> <span class="hljs-number">0</span><br><br><span class="hljs-comment">#设置为以守护进程的方式运行</span><br><span class="hljs-attr">processManagement:</span><br>  <span class="hljs-attr">fork:</span> <span class="hljs-literal">true</span><br><br></code></pre></td></tr></table></figure>
 </li>
 <li>
-<p>不是定时任务，将该任务放入<code>任务队列(taskQueue)</code>中后，<code>请求主持回调任务(requestHostCallback)</code>，最终会统一在<code>等到最后期限时执行任务(performWorkUntilDeadline)</code>中执行。</p>
+<p>创建身份账户</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">use</span>(&#x27;<span class="hljs-title">admin</span>&#x27;);<br><br>db.<span class="hljs-title function_ invoke__">createUser</span>(&#123;<br>  <span class="hljs-attr">user</span>: <span class="hljs-string">&quot;xxx&quot;</span>,<br>  <span class="hljs-attr">pwd</span>: <span class="hljs-string">&quot;xxx&quot;</span>,<br>  <span class="hljs-attr">roles</span>: [<br>    &#123; <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;userAdminAnyDatabase&quot;</span>, <span class="hljs-attr">db</span>: <span class="hljs-string">&quot;admin&quot;</span> &#125;,<br>    &#123; <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;readWriteAnyDatabase&quot;</span>, <span class="hljs-attr">db</span>: <span class="hljs-string">&quot;admin&quot;</span> &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
 </li>
 <li>
-<p><code>等到最后期限时执行任务(performWorkUntilDeadline)</code></p>
-<ul>
-<li>内部调用<code>全局变量scheduledHostCallback</code>即是<code>flushWork(true,currentTime)</code>, 并且在函数开始时，记录下当前时间为<code>开始时间(startTime)</code>,方便后面判断是否在一帧之内还有时间，作为是否还继续执行任务的依据。</li>
-<li>得到<code>flushWork</code>返回的结果<code>是否有更多的工作(hasMoreWork)</code>，如果有更多的工作，有可能是优先级任务带来的延迟时间导致任务没有到过期时间(???)，也有可能是执行的任务不是 taskQueue 的第一个导致没删除也没处理就自动从新开始，就继续<code>调度最后期限任务(schedulePerformWorkUntilDeadline)</code>的<code>刷新任务(flushWork)</code>，</li>
-</ul>
+<p>启动 mongodb: <code>cd /www/server/mongodb/bin &amp;&amp; ./mongod --config mongodb.conf</code></p>
 </li>
 <li>
-<p><code>刷新工作(flushWork)</code></p>
+<p>查看后台进程和关闭：</p>
 <ul>
-<li>测试环境时 enableProfiling 为 true，会加 try{}catch 包裹<code>wookLoop</code>,把报错显示在屏幕,生产环境时,直接执行<code>wookLoop</code></li>
-<li><code>工作循环(wookLoop)</code>:
-<ul>
-<li><code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code></li>
-<li>拿出最早的任务，如果任务存在，并且不是调度 debug 模式，那么就是正常流程
-<ul>
-<li>判断是否中断执行：<code>过期时间(expirationgTime)</code> 大于 <code>当前时间(currentTime)</code> ,或者<code>刷新工作</code>的开始时间到现在时间 大于 一帧时间，就中断。(hasTimeRemaining 这个字段暂时没用)。这里才用到优先级产生的过期时间，如果没有到期，就不执行任务，直到返回 true 给父级函数，然后继续<code>调度最后期限任务(schedulePerformWorkUntilDeadline)</code></li>
-<li>没有中断执行的话，就检查 task.callback 是否是个函数，如果不是直接释放掉 task；</li>
-<li>如果 task.callback 是函数，将 task.callback 的地址复制给当前局部变量 callback，然后将 task.callback 置为 null,将<code>任务的优先级(task.priorityLevel)</code>设置为<code>当前优先级(currentPriorityLevel)</code>,然后执行 callback,并传入参数过期标识(就是 true)
-<ul>
-<li>如果<code>callback(true)</code>返回为一个函数，将该函数赋值给<code>task.callback</code>，将再次进入循环，执行 callback 任务,再次进入循环的方法就是不从 taskQueue 中去掉。</li>
-<li>如果<code>callback(true)</code>返回不是一个函数，将剔除当前任务，也就是剔除任务队列中的第一个任务，这样就没办法循环自身了。因为当前的任务总是任务队列最优先执行的，所以就是当前执行掉的。所以就是任务队列的第一个。</li>
-<li>然后做一遍<code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code>，之后取优先级最高的任务，也就是第一个任务来继续循环。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>以防<code>当前的任务(currentTask)</code>不是 <code>任务队列(taskQueue)</code>中的第一个，那么就有可能没从<code>任务队列(taskQueue)</code>中删除掉，再次检查 currentTask 是否是 null，如果是，就返回 true 给<code>执行过期的任务(performWorkUntilDeadline)</code>,它会产生一个<code>调度过期任务(schedulePerformWorkUntilDeadline)</code>；同时如果任务没有到过期时间，是不会执行的，此时 currentTask 还是第一个任务，就返回 true 给<code>执行到过期的任务(performWorkUntilDeadline)</code>，它会产生一个<code>调度过期任务(schedulePerformWorkUntilDeadline)</code></li>
-<li>如果为空，那么只剩定时任务，就重复定时，然后触发<code>处理超时函数(handleTimeout)</code></li>
-</ul>
-</li>
+<li>ps aux | grep mongod 和 kill pid</li>
+<li>sudo systemctl stop mongod(使用 systemctl（仅限于使用 systemd 的 Linux 发行版)</li>
+<li>sudo service mongod stop(使用 service 命令（仅限于使用 init 的 Linux 发行版)<br>
+sudo service /www/server/mongodb/bin/mongod stop</li>
 </ul>
 </li>
 </ol>
-<h2 id="路程上的疑惑，看完后解答">路程上的疑惑，看完后解答</h2>
-<ol>
-<li><code>定时任务</code>,<code>优先级产生的时间间隔造成的过期时间</code>，一开始是等待的<code>定时时间</code>，等到判断否是执行的时候用的是<code>过期时间</code>来检查是否大于当前时间，如果还没到，那么就返回有任务</li>
-<li>取消前一个<code>定时任务</code>，会在 workLoop 里面执行<code>提取到时间的定时任务到任务队列(advanceTimers)</code>,和执行完任务队列后也会拿<code>定时任务队列</code>再次设置<code>定时器(requestHostTimeout)</code>来再次执行<code>超时处理函数</code>来检查到期任务。</li>
-</ol>
-<h2 id="属性">属性</h2>
-<ol>
-<li>优先级对应的时间延迟
-<ul>
-<li>ImmediatePriority： -1 // 也就是立即执行</li>
-<li>UserBlockingPriority： 250 // 用户锁定，也就是用户一直操作的间隔</li>
-<li>IdlePriority：maxSigned31BitInt，也就是 1073741823，也就是 2^30 - 1 // 空闲</li>
-<li>LowPriority：10000 // 低优先级</li>
-<li>NormalPriority：5000 // 正常优先级</li>
-</ul>
-</li>
-<li>taskQueue 是同步任务队列</li>
-<li>timerQueue 定时任务，还没有执行，所以也不在调度之中，等到执行时间后才进入调度循环。</li>
-<li>scheduledHostCallback
-<ul>
-<li>requestHostCallback 里赋值</li>
-<li>performWorkUntilDeadline 里执行</li>
-</ul>
-</li>
-<li>schedulePerformWorkUntilDeadline 产生宏任务，将执行权力移交浏览器
-<ul>
-<li>关于赋值是优先 setImmediate，因为是经过一轮 event loop 立即执行，但是兼容性不好，可以使用 MessageChannel 来实现，如果没有 MessageChannel，再用 setTimeOut,但是浏览器的 setTimeout(() =&gt; {…},0)的 delay 起码是 4，也就是会被修改成 setTimeout(() =&gt; {…},4)，就浪费了 4ms</li>
-<li>schedulePerformWorkUntilDeadline 的回调是 performWorkUntilDeadline</li>
-</ul>
-</li>
-<li>isHostCallbackScheduled 锁定<code>下一轮事件循环立即执行的宏任务(schedulePerformWorkUntilDeadline)</code>在一次 event loop 循环只有一个任务执行。</li>
-<li>isMessageLoopRunning 跟 isHostCallbackScheduled 的作用一样，双重保险</li>
-<li>isHostTimeoutScheduled 是用来打断之前的等待任务，每次进来的任务是延迟任务，并且只有延迟任务，那么久打断上一个延迟任务的等待时间。</li>
-<li>hasTimeRemaining：代表当前帧是否还有时间留给 react</li>
-<li>这里的 callback 也就是外部传进来的执行函数也就是执行任务</li>
-<li><code>下一次时间循环结束立即执行任务</code> 就是一个执行事件的时机</li>
-</ol>
-<h2 id="堆排序-Schedule-利用最小堆来获取最早的任务">堆排序(Schedule 利用最小堆来获取最早的任务)</h2>
-<ol>
-<li>调度就是用堆排序来获得最早过期任务的，最小堆，最小的时间戳在 index=0 位置</li>
-<li>之所以用堆排序，是因为时间复杂度更低，最小堆构建的时间复杂度是 O(n)精确时间复杂度是 n-log(n+1),比 n 还小。每次加入一个任务之后就构建最小堆，事件复杂度是 O(n)，比冒泡排序 O(n^2)快很多。</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/March-Wind/tool/tree/master/src/algorithm/heap-sort">讲解链接</a></li>
-</ol>
+<h2 id="mongoDB-安全">mongoDB 安全</h2>
+<p>MongoDB 在您的服务器上可能存在安全风险的原因可能有以下几点：</p>
+<p>默认配置：MongoDB 在默认情况下可能以不安全的方式进行配置。例如，默认情况下，MongoDB 允许匿名访问数据库，没有启用身份验证，或者使用弱密码进行访问。这可能使得攻击者可以轻易地访问和篡改您的数据库。</p>
+<p>不安全的网络连接：如果您的 MongoDB 实例通过不安全的网络连接（如未加密的网络传输）进行通信，那么在传输过程中数据可能会被窃听或篡改。建议使用 TLS/SSL 等安全协议对 MongoDB 的网络连接进行加密，以保护数据的机密性和完整性。</p>
+<p>缺乏访问控制：MongoDB 中的访问控制是非常重要的，它可以限制哪些用户或 IP 地址可以访问数据库，并定义不同用户的权限级别。如果没有正确配置访问控制，可能会导致未经授权的用户能够访问和修改数据库。</p>
+<p>更新和补丁管理：未及时安装 MongoDB 的更新和补丁可能导致已知的安全漏洞存在于系统中，使得攻击者可以利用这些漏洞进行入侵。</p>
+<p>弱密码：使用弱密码是一种常见的安全风险。如果您的 MongoDB 实例使用弱密码（如短密码、常见密码或容易猜测的密码），那么攻击者可以通过密码猜测或暴力破解的方式入侵数据库。</p>
+<p>为了提高 MongoDB 的安全性，建议采取以下措施：</p>
+<p>使用强密码：确保为 MongoDB 设置强密码，包括足够的长度、复杂性和随机性，以抵御密码猜测和暴力破解攻击。<br>
+启用身份验证：在 MongoDB 中启用身份验证，要求用户提供有效的凭据才能访问数据库。<br>
+配置访问控制：限制数据库的访问权限，只允许授权的用户和 IP 地址访问，并根据需要定义适当的权限级别。<br>
+加密网络连接：使用 TLS/SSL 等安全协议对 MongoDB 的网络连接进行加密，以防止数据被窃听或篡改。<br>
+及时更新和补丁：定期检查 MongoDB 的更新和补丁，并及时安装以修复已知的安全漏洞。<br>
+监控和日志记录：设置适当的监控和日志记录机制，及时检测潜在的安全事件或异常活动。<br>
+通过采取这些安全措施，您可以增强 MongoDB 在您的服务器上的安全性，并降低潜在的安全风险。同时，定期审查和评估安全性，并遵循最佳实践，是保持 MongoDB 环境安全的重要一环。</p>
+<h2 id="参考">参考</h2>
+<blockquote>
+<p>mac: <a target="_blank" rel="noopener" href="https://juejin.cn/post/7052585815037673479">https://juejin.cn/post/7052585815037673479</a></p>
+</blockquote>
+<blockquote>
+<p>centos: <a target="_blank" rel="noopener" href="https://juejin.cn/post/7163071747414032391">https://juejin.cn/post/7163071747414032391</a></p>
+</blockquote>
+<blockquote>
+<p>远程连接+身份认证：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jianleking/article/details/79715097">https://blog.csdn.net/jianleking/article/details/79715097</a></p>
+</blockquote>
+<blockquote>
+<p>内置角色：<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/reference/built-in-roles/">https://www.mongodb.com/docs/manual/reference/built-in-roles/</a></p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs"><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -408,7 +369,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/React/" class="category-chain-item">React</a>
+  <a href="/categories/other/" class="category-chain-item">other</a>
   
   
 
@@ -428,8 +389,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>React Schedule</div>
-      <div>https://march-wind.github.io/2023/11/20/React-Schedule/</div>
+      <div>mongodb在腾讯云部署和使用</div>
+      <div>https://march-wind.github.io/2024/05/14/mongodb部署/</div>
     </div>
     <div class="license-meta">
       
@@ -441,7 +402,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年11月20日</div>
+          <div>2024年5月14日</div>
         </div>
       
       
@@ -473,15 +434,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" title="阅读源码步骤">
+                      <a href="/2025/03/15/ECharts%E7%BA%BF%E6%9D%A1%E7%B2%BE%E7%A1%AE%E4%BA%A4%E4%BA%92%E6%BC%94%E7%A4%BA/" title="ECharts 线条精确交互演示 (PC/移动端)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">阅读源码步骤</span>
+                        <span class="hidden-mobile">ECharts 线条精确交互演示 (PC/移动端)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" title="阅读源码步骤">
+                        <span class="hidden-mobile">阅读源码步骤</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
