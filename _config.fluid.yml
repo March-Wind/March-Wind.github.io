@@ -49,4 +49,12 @@ footer:
     police_code: 31011502400802
     # 公安备案的图片. 为空时不显示备案图片
     # police_icon: /img/police_beian.png
+
+# 数学公式支持
+post:
+  math:
+    enable: true
+    specific: true # 只在文章 Front-matter 中指定 math: true 的页面启用
+    engine: mathjax # 使用 MathJax 引擎
+
 #---------------------------

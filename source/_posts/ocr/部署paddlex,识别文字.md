@@ -7,33 +7,6 @@ index_img: /img/paddlex-logo.png
 # banner_img: /img/read-code-index.png
 ---
 
-## 二次开发安装步骤
-
-1.  搭建 docker：https://cloud.tencent.com/document/product/213/46000#azYB6haoacR0zO9ry1cHx
-
-    1. `sudo yum install docker -y`
-    2. `sudo systemctl start docker`
-    3. `sudo docker info`
-
-2.  使用 docker 安装 paddleOCR：[参考 1](https://www.paddlepaddle.org.cn/documentation/docs/zh/install/docker/linux-docker.html#anchor-0);[参考 2](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/docker/linux-docker.html)
-
-    1. 拉取预安装 PaddlePaddle 的镜像：`docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
-    2. 用镜像构建并进入 Docker 容器：`docker run --name paddle -it -v $PWD:/paddle ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0 /bin/bash`
-       1. 第二次直接进入容器：`docker exec -it paddlex-server /bin/bash`
-       2. 查看所有的容器：`docker ps -a`
-       3. 查看所有镜像：`docker images`
-       4. 停止容器运行：`docker stop paddle`
-       5. 删除容器：`docker rm paddle`
-       6. 删除镜像：`docker rmi a5d1b6184e99`
-       7. 删除所有镜像：`docker rmi $(docker images -q)`
-       8. 启动容器：` docker start paddle_server`
-       9. 查看容器映射宿主机的路径：`docker inspect paddlex-server`
-       10. 查看容器内的进程 id：`ps aux | grep "paddlex --serve"`
-    3. 在容器中下载 PaddleOCR 源码：`git clone https://github.com/PaddlePaddle/PaddleOCR.git`或者 gitee 的仓库：`git clone https://gitee.com/paddlepaddle/PaddleOCR`
-    4. 进入项目，切换指定分支：`cd PaddleOCR && git checkout release/3.0`
-    5. 安装依赖：`pip3 install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
-    6. 设置清华源：`pip3 config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
-
 ## 直接部署 paddlex
 
 1. `docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-cpu`
@@ -160,7 +133,7 @@ curl -X 'GET' \
 ### 报错
 
 1. 访问/docs 接口来看文档，报错：
-   ![image](/img/image.png)
+   ![image](./image.png)
    解决：降低 serving 版本，`pip install "paddlex[serving]==3.0.0"`
 
 ### 参考
@@ -174,3 +147,30 @@ curl -X 'GET' \
 7. PP-StructureV3 产线使用教程：https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html
 8. 单字坐标返回：https://github.com/PaddlePaddle/PaddleOCR/pull/10515
    - ` --return_word_box=True`参数
+
+## 命令参考
+
+1.  搭建 docker：https://cloud.tencent.com/document/product/213/46000#azYB6haoacR0zO9ry1cHx
+
+    1. `sudo yum install docker -y`
+    2. `sudo systemctl start docker`
+    3. `sudo docker info`
+
+2.  使用 docker 安装 paddleOCR：[参考 1](https://www.paddlepaddle.org.cn/documentation/docs/zh/install/docker/linux-docker.html#anchor-0);[参考 2](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/docker/linux-docker.html)
+
+    1. 拉取预安装 PaddlePaddle 的镜像：`docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
+    2. 用镜像构建并进入 Docker 容器：`docker run --name paddle -it -v $PWD:/paddle ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0 /bin/bash`
+       1. 第二次直接进入容器：`docker exec -it paddlex-server /bin/bash`
+       2. 查看所有的容器：`docker ps -a`
+       3. 查看所有镜像：`docker images`
+       4. 停止容器运行：`docker stop paddle`
+       5. 删除容器：`docker rm paddle`
+       6. 删除镜像：`docker rmi a5d1b6184e99`
+       7. 删除所有镜像：`docker rmi $(docker images -q)`
+       8. 启动容器：` docker start paddle_server`
+       9. 查看容器映射宿主机的路径：`docker inspect paddlex-server`
+       10. 查看容器内的进程 id：`ps aux | grep "paddlex --serve"`
+    3. 在容器中下载 PaddleOCR 源码：`git clone https://github.com/PaddlePaddle/PaddleOCR.git`或者 gitee 的仓库：`git clone https://gitee.com/paddlepaddle/PaddleOCR`
+    4. 进入项目，切换指定分支：`cd PaddleOCR && git checkout release/3.0`
+    5. 安装依赖：`pip3 install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
+    6. 设置清华源：`pip3 config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`

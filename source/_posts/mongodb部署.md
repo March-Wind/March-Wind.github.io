@@ -1,7 +1,7 @@
 ---
 title: mongodb在腾讯云部署和使用
 subtitle: 在AI领域很多场景需要识别图文中的文字
-date: 2024-4-14 13:30:00
+date: 2024-5-14 11:30:00
 categories: other
 index_img: /img/mongodb-logo.png
 # banner_img: /img/read-code-index.png
