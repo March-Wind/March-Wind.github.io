@@ -1,0 +1,742 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Liu Zhiyang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="安装  openCloudOS 9, 安装时选择 redHat,选择后会自动显示redHat&#x2F;centos x64 解压后，bin 文件夹下之前有mongo.conf，mongodb 8.09版本没有，可以自己在 bin 文件夹下创建mongo.conf,启动时.&#x2F;mongod --config mongodb.conf &#x2F;www&#x2F;server&#x2F;mongodb&#x2F;bin&#x2F;mongod: error">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb在腾讯云部署和使用">
+<meta property="og:url" content="https://march-wind.github.io/2024/05/14/mongodb%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="March的博客">
+<meta property="og:description" content="安装  openCloudOS 9, 安装时选择 redHat,选择后会自动显示redHat&#x2F;centos x64 解压后，bin 文件夹下之前有mongo.conf，mongodb 8.09版本没有，可以自己在 bin 文件夹下创建mongo.conf,启动时.&#x2F;mongod --config mongodb.conf &#x2F;www&#x2F;server&#x2F;mongodb&#x2F;bin&#x2F;mongod: error">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://march-wind.github.io/img/mongodb-logo.png">
+<meta property="article:published_time" content="2024-05-14T03:30:00.000Z">
+<meta property="article:modified_time" content="2025-10-15T03:48:02.137Z">
+<meta property="article:author" content="Liu Zhiyang">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://march-wind.github.io/img/mongodb-logo.png">
+  
+  
+  
+  <title>mongodb在腾讯云部署和使用 - March的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"march-wind.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>March的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="在AI领域很多场景需要识别图文中的文字"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-14 11:30" pubdate>
+          2024年5月14日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">在AI领域很多场景需要识别图文中的文字</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="安装">安装</h2>
+<ol>
+<li>openCloudOS 9, 安装时选择 redHat,选择后会自动显示<code>redHat/centos x64</code></li>
+<li>解压后，bin 文件夹下之前有<code>mongo.conf</code>，<code>mongodb 8.09</code>版本没有，可以自己在 bin 文件夹下创建<code>mongo.conf</code>,启动时<code>./mongod --config mongodb.conf</code></li>
+<li><code>/www/server/mongodb/bin/mongod: error while loading shared libraries: libcrypto.so.1.1: cannot open shared object file: No such file or directory</code>
+<ol>
+<li>sudo dnf install -y compat-openssl11</li>
+<li>find / -name &quot;libcrypto.so.1.1&quot; 2&gt;/dev/null
+<ol>
+<li>若输出类似 /usr/lib64/libcrypto.so.1.1，则成功</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="启动-mongodb">启动 mongodb</h2>
+<ol>
+<li>
+<p>安装好 mongodb</p>
+</li>
+<li>
+<p>创建 db 目录和 log 目录，log 目录里面有 mongo.log，是 logpath</p>
+</li>
+<li>
+<p>使用<code>mongo.conf</code>文件进行配置参数</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-comment"># 设置数据文件的存放目录</span><br><span class="hljs-params">storage:</span><br>  <span class="hljs-params">dbPath:</span> <span class="hljs-symbol">../data</span><br><br><span class="hljs-comment"># 设置日志文件的存放目录及其日志文件名</span><br><span class="hljs-params">systemLog:</span><br>  <span class="hljs-params">destination:</span> file<br>  <span class="hljs-params">path:</span> <span class="hljs-symbol">../logs/mongodb.log</span><br>  <span class="hljs-params">logRotate:</span> reopen<br>  <span class="hljs-params">logAppend:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-params">verbosity:</span> <span class="hljs-number">0</span><br><br><span class="hljs-comment"># 设置端口号（默认的端口号是 27017）</span><br><span class="hljs-params">net:</span><br>  <span class="hljs-params">port:</span> <span class="hljs-number">27099</span><br>  <span class="hljs-params">bindIp:</span> <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span><br><br><span class="hljs-comment"># 设置为以守护进程的方式运行，即在后台运行</span><br><span class="hljs-comment"># fork: true</span><br><br><span class="hljs-comment"># 防止通过HTTP进行访问，3版本以后就没有这个参数了</span><br><span class="hljs-comment"># nohttpinterface: true</span><br><br><span class="hljs-comment"># 启用身份验证,在未创建校验用户之前，需要关闭</span><br><span class="hljs-params">security:</span><br>  <span class="hljs-params">authorization:</span> enabled<br><br><span class="hljs-params">setParameter:</span><br>  <span class="hljs-params">enableLocalhostAuthBypass:</span> <span class="hljs-number">0</span><br><br><span class="hljs-comment">#设置为以守护进程的方式运行</span><br><span class="hljs-params">processManagement:</span><br>  <span class="hljs-params">fork:</span> <span class="hljs-literal">true</span><br><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>创建身份账户</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">use</span>(&#x27;<span class="hljs-title">admin</span>&#x27;);<br><br>db.<span class="hljs-title function_ invoke__">createUser</span>(&#123;<br>  <span class="hljs-attr">user</span>: <span class="hljs-string">&quot;xxx&quot;</span>,<br>  <span class="hljs-attr">pwd</span>: <span class="hljs-string">&quot;xxx&quot;</span>,<br>  <span class="hljs-attr">roles</span>: [<br>    &#123; <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;userAdminAnyDatabase&quot;</span>, <span class="hljs-attr">db</span>: <span class="hljs-string">&quot;admin&quot;</span> &#125;,<br>    &#123; <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;readWriteAnyDatabase&quot;</span>, <span class="hljs-attr">db</span>: <span class="hljs-string">&quot;admin&quot;</span> &#125;<br>  ]<br>&#125;)<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>启动 mongodb: <code>cd /www/server/mongodb/bin &amp;&amp; ./mongod --config mongodb.conf</code></p>
+</li>
+<li>
+<p>查看后台进程和关闭：</p>
+<ul>
+<li>ps aux | grep mongod 和 kill pid</li>
+<li>sudo systemctl stop mongod(使用 systemctl（仅限于使用 systemd 的 Linux 发行版)</li>
+<li>sudo service mongod stop(使用 service 命令（仅限于使用 init 的 Linux 发行版)<br>
+sudo service /www/server/mongodb/bin/mongod stop</li>
+</ul>
+</li>
+</ol>
+<h2 id="mongoDB-安全">mongoDB 安全</h2>
+<p>MongoDB 在您的服务器上可能存在安全风险的原因可能有以下几点：</p>
+<p>默认配置：MongoDB 在默认情况下可能以不安全的方式进行配置。例如，默认情况下，MongoDB 允许匿名访问数据库，没有启用身份验证，或者使用弱密码进行访问。这可能使得攻击者可以轻易地访问和篡改您的数据库。</p>
+<p>不安全的网络连接：如果您的 MongoDB 实例通过不安全的网络连接（如未加密的网络传输）进行通信，那么在传输过程中数据可能会被窃听或篡改。建议使用 TLS/SSL 等安全协议对 MongoDB 的网络连接进行加密，以保护数据的机密性和完整性。</p>
+<p>缺乏访问控制：MongoDB 中的访问控制是非常重要的，它可以限制哪些用户或 IP 地址可以访问数据库，并定义不同用户的权限级别。如果没有正确配置访问控制，可能会导致未经授权的用户能够访问和修改数据库。</p>
+<p>更新和补丁管理：未及时安装 MongoDB 的更新和补丁可能导致已知的安全漏洞存在于系统中，使得攻击者可以利用这些漏洞进行入侵。</p>
+<p>弱密码：使用弱密码是一种常见的安全风险。如果您的 MongoDB 实例使用弱密码（如短密码、常见密码或容易猜测的密码），那么攻击者可以通过密码猜测或暴力破解的方式入侵数据库。</p>
+<p>为了提高 MongoDB 的安全性，建议采取以下措施：</p>
+<p>使用强密码：确保为 MongoDB 设置强密码，包括足够的长度、复杂性和随机性，以抵御密码猜测和暴力破解攻击。<br>
+启用身份验证：在 MongoDB 中启用身份验证，要求用户提供有效的凭据才能访问数据库。<br>
+配置访问控制：限制数据库的访问权限，只允许授权的用户和 IP 地址访问，并根据需要定义适当的权限级别。<br>
+加密网络连接：使用 TLS/SSL 等安全协议对 MongoDB 的网络连接进行加密，以防止数据被窃听或篡改。<br>
+及时更新和补丁：定期检查 MongoDB 的更新和补丁，并及时安装以修复已知的安全漏洞。<br>
+监控和日志记录：设置适当的监控和日志记录机制，及时检测潜在的安全事件或异常活动。<br>
+通过采取这些安全措施，您可以增强 MongoDB 在您的服务器上的安全性，并降低潜在的安全风险。同时，定期审查和评估安全性，并遵循最佳实践，是保持 MongoDB 环境安全的重要一环。</p>
+<h2 id="参考">参考</h2>
+<blockquote>
+<p>mac: <a target="_blank" rel="noopener" href="https://juejin.cn/post/7052585815037673479">https://juejin.cn/post/7052585815037673479</a></p>
+</blockquote>
+<blockquote>
+<p>centos: <a target="_blank" rel="noopener" href="https://juejin.cn/post/7163071747414032391">https://juejin.cn/post/7163071747414032391</a></p>
+</blockquote>
+<blockquote>
+<p>远程连接+身份认证：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jianleking/article/details/79715097">https://blog.csdn.net/jianleking/article/details/79715097</a></p>
+</blockquote>
+<blockquote>
+<p>内置角色：<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/reference/built-in-roles/">https://www.mongodb.com/docs/manual/reference/built-in-roles/</a></p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs"><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/other/" class="category-chain-item">other</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mongodb在腾讯云部署和使用</div>
+      <div>https://march-wind.github.io/2024/05/14/mongodb部署/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Liu Zhiyang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/06/JWT%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/" title="JWT登录系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JWT登录系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" title="阅读源码步骤">
+                        <span class="hidden-mobile">阅读源码步骤</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      沪ICP备2024044145号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502400802"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>沪公网安备31011502400802</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

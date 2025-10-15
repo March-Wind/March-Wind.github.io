@@ -1,0 +1,775 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Liu Zhiyang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="入口 unstable_scheduleCallback 调度 callback   开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)   创建 newTask(来自 unstable_scheduleCallback)  id: callback &#x2F;&#x2F; 传进来的 callback priorityLevel &#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Schedule">
+<meta property="og:url" content="https://march-wind.github.io/2023/11/20/React-Schedule/index.html">
+<meta property="og:site_name" content="March的博客">
+<meta property="og:description" content="入口 unstable_scheduleCallback 调度 callback   开始时间(startTime &#x3D; 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)   创建 newTask(来自 unstable_scheduleCallback)  id: callback &#x2F;&#x2F; 传进来的 callback priorityLevel &#x2F;&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://march-wind.github.io/img/react-logo.png">
+<meta property="article:published_time" content="2023-11-20T03:42:08.000Z">
+<meta property="article:modified_time" content="2025-10-15T03:48:02.136Z">
+<meta property="article:author" content="Liu Zhiyang">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://march-wind.github.io/img/react-logo.png">
+  
+  
+  
+  <title>React Schedule - March的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"march-wind.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>March的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="React Schedule"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-20 11:42" pubdate>
+          2023年11月20日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">React Schedule</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="入口-unstable-scheduleCallback-调度-callback">入口 unstable_scheduleCallback 调度 callback</h3>
+<ol>
+<li>
+<p>开始时间(startTime = 当前时间 + 传入的 delay) + 优先级时间，计算失效时间(expirationTime)</p>
+</li>
+<li>
+<p>创建 newTask(来自 unstable_scheduleCallback)</p>
+<ul>
+<li>id:</li>
+<li>callback // 传进来的 callback</li>
+<li>priorityLevel // 传进来的优先级 priorityLevel</li>
+<li>startTime // 上面计算的时间</li>
+<li>expirationTime // 上面计算的失效时间</li>
+<li>sortIndex: -1 // ??? 都是被复制为 expirationTime</li>
+</ul>
+</li>
+<li>
+<p>如果是<code>定时任务(当前时间后的一定时间才执行，现在还没有进入调度的资格，放在timerQueue中)</code>，也就是未来时间执行的任务(startTime &gt; currentTime)</p>
+<ul>
+<li>将 startTime 赋值给 sortIndex(newTask.sortIndex = startTime)</li>
+<li>将 newTask 加入<code>定时任务队列中(timerQueue)</code></li>
+<li>如果只有<code>定时任务(timeQueue)</code>,等待延迟执行时间后，触发<code>处理超时函数(handleTimeout)</code>,</li>
+<li><code>处理超时函数(handleTimeout)</code>：
+<ul>
+<li><code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code>：主要是从定时任务队列(timeQueue)将到时间的任务放到任务队列中(taskQueue)；没有 callback 的释放掉；没有到执行时间的任务，再等等；</li>
+<li>由于定时任务已经到执行时间，就放到任务队列，然后查看是否有任务执行，没有任务就执行该任务(唯一执行机制：用<code>isHostCallbackScheduled</code>标识来标识之前是否有<code>下一次事件循环结束立即执行任务</code>)，有就释放掉。</li>
+<li><code>请求主持回调任务(requestHostCallback)</code>：启动一个<code>调度 执行等到最后期限任务(schedulePerformWorkUntilDeadline)</code>来执行<code>刷新工作(flushWork)</code>，并且用<code>isMessageLoopRunning</code>来锁定只有一次任务在下一轮事件循环后立即执行。<code>刷新工作(flushWork)</code>是挂在<code>全局变量scheduledHostCallback</code>上，之后在<code>等到最后期限时执行任务(performWorkUntilDeadline)</code>调用，之所以放在<code>全局变量scheduledHostCallback</code>上，是为了方便扩展，执行其他函数。</li>
+<li><code>isHostCallbackScheduled</code>和<code>isMessageLoopRunning</code>作用一样， 保证一次 event loop 后只有一个任务执行,并且是串行的(保证了所有的事件占用时间是确定的，空闲也是确定的)，双重保险。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>不是定时任务，将该任务放入<code>任务队列(taskQueue)</code>中后，<code>请求主持回调任务(requestHostCallback)</code>，最终会统一在<code>等到最后期限时执行任务(performWorkUntilDeadline)</code>中执行。</p>
+</li>
+<li>
+<p><code>等到最后期限时执行任务(performWorkUntilDeadline)</code></p>
+<ul>
+<li>内部调用<code>全局变量scheduledHostCallback</code>即是<code>flushWork(true,currentTime)</code>, 并且在函数开始时，记录下当前时间为<code>开始时间(startTime)</code>,方便后面判断是否在一帧之内还有时间，作为是否还继续执行任务的依据。</li>
+<li>得到<code>flushWork</code>返回的结果<code>是否有更多的工作(hasMoreWork)</code>，如果有更多的工作，有可能是优先级任务带来的延迟时间导致任务没有到过期时间(???)，也有可能是执行的任务不是 taskQueue 的第一个导致没删除也没处理就自动从新开始，就继续<code>调度最后期限任务(schedulePerformWorkUntilDeadline)</code>的<code>刷新任务(flushWork)</code>，</li>
+</ul>
+</li>
+<li>
+<p><code>刷新工作(flushWork)</code></p>
+<ul>
+<li>测试环境时 enableProfiling 为 true，会加 try{}catch 包裹<code>wookLoop</code>,把报错显示在屏幕,生产环境时,直接执行<code>wookLoop</code></li>
+<li><code>工作循环(wookLoop)</code>:
+<ul>
+<li><code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code></li>
+<li>拿出最早的任务，如果任务存在，并且不是调度 debug 模式，那么就是正常流程
+<ul>
+<li>判断是否中断执行：<code>过期时间(expirationgTime)</code> 大于 <code>当前时间(currentTime)</code> ,或者<code>刷新工作</code>的开始时间到现在时间 大于 一帧时间，就中断。(hasTimeRemaining 这个字段暂时没用)。这里才用到优先级产生的过期时间，如果没有到期，就不执行任务，直到返回 true 给父级函数，然后继续<code>调度最后期限任务(schedulePerformWorkUntilDeadline)</code></li>
+<li>没有中断执行的话，就检查 task.callback 是否是个函数，如果不是直接释放掉 task；</li>
+<li>如果 task.callback 是函数，将 task.callback 的地址复制给当前局部变量 callback，然后将 task.callback 置为 null,将<code>任务的优先级(task.priorityLevel)</code>设置为<code>当前优先级(currentPriorityLevel)</code>,然后执行 callback,并传入参数过期标识(就是 true)
+<ul>
+<li>如果<code>callback(true)</code>返回为一个函数，将该函数赋值给<code>task.callback</code>，将再次进入循环，执行 callback 任务,再次进入循环的方法就是不从 taskQueue 中去掉。</li>
+<li>如果<code>callback(true)</code>返回不是一个函数，将剔除当前任务，也就是剔除任务队列中的第一个任务，这样就没办法循环自身了。因为当前的任务总是任务队列最优先执行的，所以就是当前执行掉的。所以就是任务队列的第一个。</li>
+<li>然后做一遍<code>提取定时队列中到时间的的任务到任务队列taskQueue(advanceTimers)</code>，之后取优先级最高的任务，也就是第一个任务来继续循环。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>以防<code>当前的任务(currentTask)</code>不是 <code>任务队列(taskQueue)</code>中的第一个，那么就有可能没从<code>任务队列(taskQueue)</code>中删除掉，再次检查 currentTask 是否是 null，如果是，就返回 true 给<code>执行过期的任务(performWorkUntilDeadline)</code>,它会产生一个<code>调度过期任务(schedulePerformWorkUntilDeadline)</code>；同时如果任务没有到过期时间，是不会执行的，此时 currentTask 还是第一个任务，就返回 true 给<code>执行到过期的任务(performWorkUntilDeadline)</code>，它会产生一个<code>调度过期任务(schedulePerformWorkUntilDeadline)</code></li>
+<li>如果为空，那么只剩定时任务，就重复定时，然后触发<code>处理超时函数(handleTimeout)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="路程上的疑惑，看完后解答">路程上的疑惑，看完后解答</h2>
+<ol>
+<li><code>定时任务</code>,<code>优先级产生的时间间隔造成的过期时间</code>，一开始是等待的<code>定时时间</code>，等到判断否是执行的时候用的是<code>过期时间</code>来检查是否大于当前时间，如果还没到，那么就返回有任务</li>
+<li>取消前一个<code>定时任务</code>，会在 workLoop 里面执行<code>提取到时间的定时任务到任务队列(advanceTimers)</code>,和执行完任务队列后也会拿<code>定时任务队列</code>再次设置<code>定时器(requestHostTimeout)</code>来再次执行<code>超时处理函数</code>来检查到期任务。</li>
+</ol>
+<h2 id="属性">属性</h2>
+<ol>
+<li>优先级对应的时间延迟
+<ul>
+<li>ImmediatePriority： -1 // 也就是立即执行</li>
+<li>UserBlockingPriority： 250 // 用户锁定，也就是用户一直操作的间隔</li>
+<li>IdlePriority：maxSigned31BitInt，也就是 1073741823，也就是 2^30 - 1 // 空闲</li>
+<li>LowPriority：10000 // 低优先级</li>
+<li>NormalPriority：5000 // 正常优先级</li>
+</ul>
+</li>
+<li>taskQueue 是同步任务队列</li>
+<li>timerQueue 定时任务，还没有执行，所以也不在调度之中，等到执行时间后才进入调度循环。</li>
+<li>scheduledHostCallback
+<ul>
+<li>requestHostCallback 里赋值</li>
+<li>performWorkUntilDeadline 里执行</li>
+</ul>
+</li>
+<li>schedulePerformWorkUntilDeadline 产生宏任务，将执行权力移交浏览器
+<ul>
+<li>关于赋值是优先 setImmediate，因为是经过一轮 event loop 立即执行，但是兼容性不好，可以使用 MessageChannel 来实现，如果没有 MessageChannel，再用 setTimeOut,但是浏览器的 setTimeout(() =&gt; {…},0)的 delay 起码是 4，也就是会被修改成 setTimeout(() =&gt; {…},4)，就浪费了 4ms</li>
+<li>schedulePerformWorkUntilDeadline 的回调是 performWorkUntilDeadline</li>
+</ul>
+</li>
+<li>isHostCallbackScheduled 锁定<code>下一轮事件循环立即执行的宏任务(schedulePerformWorkUntilDeadline)</code>在一次 event loop 循环只有一个任务执行。</li>
+<li>isMessageLoopRunning 跟 isHostCallbackScheduled 的作用一样，双重保险</li>
+<li>isHostTimeoutScheduled 是用来打断之前的等待任务，每次进来的任务是延迟任务，并且只有延迟任务，那么久打断上一个延迟任务的等待时间。</li>
+<li>hasTimeRemaining：代表当前帧是否还有时间留给 react</li>
+<li>这里的 callback 也就是外部传进来的执行函数也就是执行任务</li>
+<li><code>下一次时间循环结束立即执行任务</code> 就是一个执行事件的时机</li>
+</ol>
+<h2 id="堆排序-Schedule-利用最小堆来获取最早的任务">堆排序(Schedule 利用最小堆来获取最早的任务)</h2>
+<ol>
+<li>调度就是用堆排序来获得最早过期任务的，最小堆，最小的时间戳在 index=0 位置</li>
+<li>之所以用堆排序，是因为时间复杂度更低，最小堆构建的时间复杂度是 O(n)精确时间复杂度是 n-log(n+1),比 n 还小。每次加入一个任务之后就构建最小堆，事件复杂度是 O(n)，比冒泡排序 O(n^2)快很多。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/March-Wind/tool/tree/master/src/algorithm/heap-sort">讲解链接</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/React/" class="category-chain-item">React</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>React Schedule</div>
+      <div>https://march-wind.github.io/2023/11/20/React-Schedule/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Liu Zhiyang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" title="阅读源码步骤">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">阅读源码步骤</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      沪ICP备2024044145号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502400802"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>沪公网安备31011502400802</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

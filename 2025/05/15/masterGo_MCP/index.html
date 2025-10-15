@@ -1,0 +1,748 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Liu Zhiyang">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="使用   复制以下代码到 mcp.json 文件中 (权限问题，7 月 10 号之前凭借 token，任意用户都可以，之后只能编辑席位和研发席位的 token 可以访问 mcp，原文地址：https:&#x2F;&#x2F;mastergo.com&#x2F;static&#x2F;advance-notice-prototype.html) 12345678910111213141516&amp;#123;  &quot;mcpServers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MasterGo MCP 尝试">
+<meta property="og:url" content="https://march-wind.github.io/2025/05/15/masterGo_MCP/index.html">
+<meta property="og:site_name" content="March的博客">
+<meta property="og:description" content="使用   复制以下代码到 mcp.json 文件中 (权限问题，7 月 10 号之前凭借 token，任意用户都可以，之后只能编辑席位和研发席位的 token 可以访问 mcp，原文地址：https:&#x2F;&#x2F;mastergo.com&#x2F;static&#x2F;advance-notice-prototype.html) 12345678910111213141516&amp;#123;  &quot;mcpServers">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://march-wind.github.io/img/mg-logo.png">
+<meta property="article:published_time" content="2025-05-15T12:08:46.000Z">
+<meta property="article:modified_time" content="2025-10-15T03:48:02.136Z">
+<meta property="article:author" content="Liu Zhiyang">
+<meta property="article:tag" content="MasterGo">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="UI设计区安监">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://march-wind.github.io/img/mg-logo.png">
+  
+  
+  
+  <title>MasterGo MCP 尝试 - March的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"march-wind.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>March的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MasterGo MCP 尝试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-15 20:08" pubdate>
+          2025年5月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MasterGo MCP 尝试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="使用">使用</h2>
+<ol>
+<li>
+<p>复制以下代码到 mcp.json 文件中 (权限问题，7 月 10 号之前凭借 token，任意用户都可以，之后只能编辑席位和研发席位的 token 可以访问 mcp，原文地址：<a target="_blank" rel="noopener" href="https://mastergo.com/static/advance-notice-prototype.html">https://mastergo.com/static/advance-notice-prototype.html</a>)</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs perl">&#123;<br>  <span class="hljs-string">&quot;mcpServers&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;mastergo-magic-mcp&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;command&quot;</span>: <span class="hljs-string">&quot;npx&quot;</span>,<br>      <span class="hljs-string">&quot;args&quot;</span>: [<br>        <span class="hljs-string">&quot;-y&quot;</span>,<br>        <span class="hljs-string">&quot;<span class="hljs-variable">@mastergo</span>/magic-mcp&quot;</span>,<br>        <span class="hljs-string">&quot;--token=MG_MCP_TOKEN&quot;</span>,<br>        <span class="hljs-string">&quot;--url=https://mastergo.com&quot;</span><br>      ],<br>      <span class="hljs-string">&quot;env&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;NPM_CONFIG_REGISTRY&quot;</span>: <span class="hljs-string">&quot;https://registry.npmjs.org/&quot;</span><br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="/img2/masterGo_MCP_1.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
+</li>
+<li>
+<p>获取 token，替换 mcp.json 文件中的&lt;MG_MCP_TOKEN&gt;<br>
+<img src="/img2/masterGo_MCP_2.jpg" srcset="/img/loading.gif" lazyload alt="image"><br>
+<img src="/img2/masterGo_MCP_3.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
+</li>
+<li>
+<p>保存后，回到设置页面，如果显示绿色，并且出现了 Tools 有 mcp__getDSL 就是成功了。</p>
+</li>
+<li>
+<p>来到 MasterGo 中，选中一个图层，此时图层是 frame 类型的话，链接上会增加 layerId 参数，然后复制链接<br>
+<img src="/img2/masterGo_MCP_4.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
+</li>
+<li>
+<p>复制 URL 到 cursor 中，输入一下 prompt 进行生成代码<br>
+<img src="/img2/masterGo_MCP_5.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
+</li>
+<li>
+<p>以下三个生成效果：图 1 是官方 demo、图 2 是收听领奖的整个页面、图 3 是单个按钮。<br>
+<img src="/img2/masterGo_MCP_6.jpg" srcset="/img/loading.gif" lazyload alt="image"><br>
+<img src="/img2/masterGo_MCP_7.jpg" srcset="/img/loading.gif" lazyload alt="image"><br>
+<img src="/img2/masterGo_MCP_8.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
+</li>
+</ol>
+<h3 id="探索-MCP-实现原理">探索 MCP 实现原理</h3>
+<ol>
+<li>
+<p>插件 github 地址：<a target="_blank" rel="noopener" href="https://github.com/mastergo-design/mastergo-magic-mcp">https://github.com/mastergo-design/mastergo-magic-mcp</a></p>
+</li>
+<li>
+<p>插件提供 mcp 工具：</p>
+<ul>
+<li>mcp__getDsl，描述如下，概括为：提供 fileId 和 layerId 字段，返回原始的 DSL。包含所有信息。</li>
+</ul>
+<figure class="highlight smalltalk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs smalltalk"><br><span class="hljs-comment">&quot;Use this tool to retrieve the DSL (Domain Specific Language) data from MasterGo design files and the rules you must follow when generating code.</span><br><span class="hljs-comment">This tool is useful when you need to analyze the structure of a design, understand component hierarchy, or extract design properties.</span><br><span class="hljs-comment">You must provide a fileId and layerId to identify the specific design element.</span><br><span class="hljs-comment">This tool returns the raw DSL data in JSON format that you can then parse and analyze.</span><br><span class="hljs-comment">This tool also returns the rules you must follow when generating code.</span><br><span class="hljs-comment">The DSL data can also be used to transform and generate code for different frameworks.&quot;</span><br><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>
+<p>mcp__getComponentLink，描述如下，概括为：当 mcp_getDsl 返回的数据包含 componentDocumentLinks 数组时。获取到每个组件的文档(masterGo 样式组件的文档),根据文档信息生成对应的组件。</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><br>When <span class="hljs-keyword">the</span> data returned <span class="hljs-keyword">by</span> mcp\*\*getDsl <span class="hljs-keyword">contains</span> <span class="hljs-keyword">a</span> non-<span class="hljs-literal">empty</span> componentDocumentLinks array, this tool is used <span class="hljs-built_in">to</span> sequentially retrieve URLs <span class="hljs-built_in">from</span> <span class="hljs-keyword">the</span> componentDocumentLinks array <span class="hljs-keyword">and</span> <span class="hljs-keyword">then</span> obtain component documentation data. The returned document data is used <span class="hljs-keyword">for</span> you <span class="hljs-built_in">to</span> generate frontend code based <span class="hljs-keyword">on</span> <span class="hljs-title">components</span>.<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>mcp__getMeta，描述如下，概括为：用来给用户构建一个完整的网站，或者高级网站。提供 fileId 和 layerId 字段，返回网站和页面的规则和结果(在 masterGo 中的图层，图层里有规则和信息)。cursor 会根据元信息，生成 <a target="_blank" rel="noopener" href="http://task.md">task.md</a>，然后去递归的去寻找 masterGo 设计页面，然后逐一生成页面，并且会加上 mete 信息里的跳转，或者其他事件。使用链接：<a target="_blank" rel="noopener" href="https://mastergo.com/file/155675508499265?fileOpenFrom=home&amp;page_id=8740%3A3698&amp;devMode=true">https://mastergo.com/file/155675508499265?fileOpenFrom=home&amp;page_id=8740%3A3698&amp;devMode=true</a></p>
+</li>
+<li>
+<p>mcp__getComponentGenerator，描述如下，概括为，提供 rootPath、fileId、layerId，返回组件开发工作流的文件(<a target="_blank" rel="noopener" href="http://component-workflow.md">component-workflow.md</a>)，让 cursor 根据 <a target="_blank" rel="noopener" href="http://component-workflow.md">component-workflow.md</a> 规则开发组件。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><br>Users need <span class="hljs-keyword">to</span> actively <span class="hljs-keyword">call</span> this tool <span class="hljs-keyword">to</span> <span class="hljs-keyword">get</span> the component development workflow. <span class="hljs-keyword">When</span> Generator <span class="hljs-keyword">is</span> mentioned, please actively <span class="hljs-keyword">call</span> this tool.<br>This tool provides a structured workflow <span class="hljs-keyword">for</span> component development <span class="hljs-keyword">following</span> best practices.<br>You must provide an absolute rootPath <span class="hljs-keyword">of</span> workspace <span class="hljs-keyword">to</span> save workflow files.<br><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>mcp__getDsl 返回结果和 masterGo 插件中的 DSL 比较，概括为，几乎完全不一样的字段，MCP 返回的 DSL 数据中的样式数据是稍加处理过的。</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br></pre></td><td class="code"><pre><code class="hljs prolog"><br>&#123;<br>  <span class="hljs-string">&quot;dsl&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;styles&quot;</span>: &#123;<br>      <span class="hljs-string">&quot;paint_1:0363&quot;</span>: &#123; <span class="hljs-string">&quot;value&quot;</span>: [<span class="hljs-string">&quot;#FFFFFF&quot;</span>], <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Whites/White&quot;</span> &#125;,<br>      <span class="hljs-string">&quot;effect_1:0365&quot;</span>: &#123; <span class="hljs-string">&quot;value&quot;</span>: [<span class="hljs-string">&quot;box-shadow: 0px 0px 0px 20px rgba(0, 0, 0, 0.02);&quot;</span>], <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;box shadow&quot;</span> &#125;,<br>      <span class="hljs-string">&quot;paint_1:0404&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;value&quot;</span>: [<br>          &#123;<br>            <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;https://image-resource.mastergo.com/57000091966935/57000091966937/6d01dc22287b99530477ebcb8831f8bb.png&quot;</span>,<br>            <span class="hljs-string">&quot;filters&quot;</span>: <span class="hljs-string">&quot;&quot;</span><br>          &#125;<br>        ]<br>      &#125;,<br>      <span class="hljs-string">&quot;paint_1:0373&quot;</span>: &#123; <span class="hljs-string">&quot;value&quot;</span>: [<span class="hljs-string">&quot;#313237&quot;</span>], <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Blacks/High emphasis&quot;</span> &#125;,<br>      <span class="hljs-string">&quot;font_1:0372&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;value&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;family&quot;</span>: <span class="hljs-string">&quot;Amiko-Bold&quot;</span>,<br>          <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">25</span>,<br>          <span class="hljs-string">&quot;decoration&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;case&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;lineHeight&quot;</span>: <span class="hljs-string">&quot;33.79999923706055&quot;</span>,<br>          <span class="hljs-string">&quot;letterSpacing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span><br>        &#125;,<br>        <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Headings/Heading&quot;</span><br>      &#125;,<br>      <span class="hljs-string">&quot;paint_1:0379&quot;</span>: &#123; <span class="hljs-string">&quot;value&quot;</span>: [<span class="hljs-string">&quot;#718797&quot;</span>], <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Blacks/Mid emphasis&quot;</span> &#125;,<br>      <span class="hljs-string">&quot;font_1:0378&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;value&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;family&quot;</span>: <span class="hljs-string">&quot;Inter-Regular&quot;</span>,<br>          <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">16</span>,<br>          <span class="hljs-string">&quot;decoration&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;case&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;lineHeight&quot;</span>: <span class="hljs-string">&quot;26.399999618530273&quot;</span>,<br>          <span class="hljs-string">&quot;letterSpacing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span><br>        &#125;,<br>        <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Body/body&quot;</span><br>      &#125;,<br>      <span class="hljs-string">&quot;paint_1:0401&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;value&quot;</span>: [<br>          &#123;<br>            <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;https://image-resource.mastergo.com/57000091966935/57000091966937/b253f033eb4e3f396f8ee23280a1b034.png&quot;</span>,<br>            <span class="hljs-string">&quot;filters&quot;</span>: <span class="hljs-string">&quot;&quot;</span><br>          &#125;<br>        ]<br>      &#125;,<br>      <span class="hljs-string">&quot;font_1:0399&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;value&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;family&quot;</span>: <span class="hljs-string">&quot;Inter-SemiBold&quot;</span>,<br>          <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">16</span>,<br>          <span class="hljs-string">&quot;decoration&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;case&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;lineHeight&quot;</span>: <span class="hljs-string">&quot;26.399999618530273&quot;</span>,<br>          <span class="hljs-string">&quot;letterSpacing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span><br>        &#125;,<br>        <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Body/BodyBold&quot;</span><br>      &#125;,<br>      <span class="hljs-string">&quot;font_1:0395&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;value&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;family&quot;</span>: <span class="hljs-string">&quot;Inter-Regular&quot;</span>,<br>          <span class="hljs-string">&quot;size&quot;</span>: <span class="hljs-number">12</span>,<br>          <span class="hljs-string">&quot;decoration&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;case&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>          <span class="hljs-string">&quot;lineHeight&quot;</span>: <span class="hljs-string">&quot;16.799999237060547&quot;</span>,<br>          <span class="hljs-string">&quot;letterSpacing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span><br>        &#125;,<br>        <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;Other/caption&quot;</span><br>      &#125;,<br>      <span class="hljs-string">&quot;paint_1:0383&quot;</span>: &#123; <span class="hljs-string">&quot;value&quot;</span>: [] &#125;,<br>      <span class="hljs-string">&quot;paint_1:0387&quot;</span>: &#123; <span class="hljs-string">&quot;value&quot;</span>: [<span class="hljs-string">&quot;#5374FF&quot;</span>], <span class="hljs-string">&quot;token&quot;</span>: <span class="hljs-string">&quot;AppColors/ppl&quot;</span> &#125;<br>    &#125;,<br>    <span class="hljs-string">&quot;nodes&quot;</span>: [<br>      &#123;<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>        <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0222&quot;</span>,<br>        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;simple layer 1&quot;</span>,<br>        <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">540</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">680</span>, <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">0</span> &#125;,<br>        <span class="hljs-string">&quot;fill&quot;</span>: <span class="hljs-string">&quot;paint_1:0363&quot;</span>,<br>        <span class="hljs-string">&quot;children&quot;</span>: [<br>          &#123;<br>            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;LAYER&quot;</span>,<br>            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0245&quot;</span>,<br>            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Rectangle 8&quot;</span>,<br>            <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">500</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">380.2801208496094</span>, <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">20</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">20</span> &#125;,<br>            <span class="hljs-string">&quot;flexShrink&quot;</span>: <span class="hljs-number">1</span>,<br>            <span class="hljs-string">&quot;borderRadius&quot;</span>: <span class="hljs-string">&quot;10px&quot;</span>,<br>            <span class="hljs-string">&quot;fill&quot;</span>: <span class="hljs-string">&quot;paint_1:0404&quot;</span><br>          &#125;,<br>          &#123;<br>            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0223&quot;</span>,<br>            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Frame 42&quot;</span>,<br>            <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123;<br>              <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">500</span>,<br>              <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">259.7198791503906</span>,<br>              <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">20</span>,<br>              <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">400.2801208496094</span><br>            &#125;,<br>            <span class="hljs-string">&quot;flexGrow&quot;</span>: <span class="hljs-number">1</span>,<br>            <span class="hljs-string">&quot;flexShrink&quot;</span>: <span class="hljs-number">1</span>,<br>            <span class="hljs-string">&quot;children&quot;</span>: [<br>              &#123;<br>                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0224&quot;</span>,<br>                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Frame 30&quot;</span>,<br>                <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">460</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">121</span>, <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">20</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">40</span> &#125;,<br>                <span class="hljs-string">&quot;flexShrink&quot;</span>: <span class="hljs-number">1</span>,<br>                <span class="hljs-string">&quot;children&quot;</span>: [<br>                  &#123;<br>                    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;TEXT&quot;</span>,<br>                    <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0225&quot;</span>,<br>                    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Use the bluetooth SMS andwidth, then you can&quot;</span>,<br>                    <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">460</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">68</span> &#125;,<br>                    <span class="hljs-string">&quot;flexShrink&quot;</span>: <span class="hljs-number">1</span>,<br>                    <span class="hljs-string">&quot;text&quot;</span>: [&#123; <span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;Use the bluetooth SMS andwidth, then you can&quot;</span>, <span class="hljs-string">&quot;font&quot;</span>: <span class="hljs-string">&quot;font_1:0372&quot;</span> &#125;],<br>                    <span class="hljs-string">&quot;textColor&quot;</span>: [&#123; <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;end&quot;</span>: <span class="hljs-number">44</span>, <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;paint_1:0373&quot;</span> &#125;],<br>                    <span class="hljs-string">&quot;textAlign&quot;</span>: <span class="hljs-string">&quot;left&quot;</span>,<br>                    <span class="hljs-string">&quot;textMode&quot;</span>: <span class="hljs-string">&quot;auto-height&quot;</span><br>                  &#125;,<br>                  &#123;<br>                    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;TEXT&quot;</span>,<br>                    <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0228&quot;</span>,<br>                    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Compressing the monitor won&#x27;t do anything, we need to synthesize the cross-platform HTTP feed.&quot;</span>,<br>                    <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">460</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">53</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">68</span> &#125;,<br>                    <span class="hljs-string">&quot;flexShrink&quot;</span>: <span class="hljs-number">1</span>,<br>                    <span class="hljs-string">&quot;text&quot;</span>: [<br>                      &#123;<br>                        <span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;Compressing the monitor won&#x27;t do anything, we need to synthesize the cross-platform HTTP feed.&quot;</span>,<br>                        <span class="hljs-string">&quot;font&quot;</span>: <span class="hljs-string">&quot;font_1:0378&quot;</span><br>                      &#125;<br>                    ],<br>                    <span class="hljs-string">&quot;textColor&quot;</span>: [&#123; <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;end&quot;</span>: <span class="hljs-number">94</span>, <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;paint_1:0379&quot;</span> &#125;],<br>                    <span class="hljs-string">&quot;textAlign&quot;</span>: <span class="hljs-string">&quot;left&quot;</span>,<br>                    <span class="hljs-string">&quot;textMode&quot;</span>: <span class="hljs-string">&quot;auto-height&quot;</span><br>                  &#125;<br>                ],<br>                <span class="hljs-string">&quot;flexContainerInfo&quot;</span>: &#123; <span class="hljs-string">&quot;flexDirection&quot;</span>: <span class="hljs-string">&quot;column&quot;</span>, <span class="hljs-string">&quot;mainSizing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>, <span class="hljs-string">&quot;crossSizing&quot;</span>: <span class="hljs-string">&quot;fixed&quot;</span> &#125;<br>              &#125;,<br>              &#123;<br>                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0231&quot;</span>,<br>                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Frame 31&quot;</span>,<br>                <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">460</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">44</span>, <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">20</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">195.71987915039062</span> &#125;,<br>                <span class="hljs-string">&quot;flexShrink&quot;</span>: <span class="hljs-number">1</span>,<br>                <span class="hljs-string">&quot;children&quot;</span>: [<br>                  &#123;<br>                    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;GROUP&quot;</span>,<br>                    <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0235&quot;</span>,<br>                    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Group 1&quot;</span>,<br>                    <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">194</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">44</span> &#125;,<br>                    <span class="hljs-string">&quot;children&quot;</span>: [<br>                      &#123;<br>                        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>                        <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0236&quot;</span>,<br>                        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Frame 23&quot;</span>,<br>                        <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">194</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">44</span> &#125;,<br>                        <span class="hljs-string">&quot;children&quot;</span>: [<br>                          &#123;<br>                            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;LAYER&quot;</span>,<br>                            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0237&quot;</span>,<br>                            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Rectangle 19&quot;</span>,<br>                            <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">40</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">40</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">2</span> &#125;,<br>                            <span class="hljs-string">&quot;borderRadius&quot;</span>: <span class="hljs-string">&quot;155px&quot;</span>,<br>                            <span class="hljs-string">&quot;fill&quot;</span>: <span class="hljs-string">&quot;paint_1:0401&quot;</span><br>                          &#125;,<br>                          &#123;<br>                            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>                            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0238&quot;</span>,<br>                            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Frame 24&quot;</span>,<br>                            <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">144</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">44</span>, <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">50</span> &#125;,<br>                            <span class="hljs-string">&quot;children&quot;</span>: [<br>                              &#123;<br>                                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;TEXT&quot;</span>,<br>                                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0239&quot;</span>,<br>                                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Darlene Robertson&quot;</span>,<br>                                <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">144</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">27</span> &#125;,<br>                                <span class="hljs-string">&quot;text&quot;</span>: [&#123; <span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;Darlene Robertson&quot;</span>, <span class="hljs-string">&quot;font&quot;</span>: <span class="hljs-string">&quot;font_1:0399&quot;</span> &#125;],<br>                                <span class="hljs-string">&quot;textColor&quot;</span>: [&#123; <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;end&quot;</span>: <span class="hljs-number">17</span>, <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;paint_1:0373&quot;</span> &#125;],<br>                                <span class="hljs-string">&quot;textAlign&quot;</span>: <span class="hljs-string">&quot;left&quot;</span>,<br>                                <span class="hljs-string">&quot;textMode&quot;</span>: <span class="hljs-string">&quot;single-line&quot;</span><br>                              &#125;,<br>                              &#123;<br>                                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;TEXT&quot;</span>,<br>                                <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0242&quot;</span>,<br>                                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;March 12, 2021&quot;</span>,<br>                                <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">87</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">17</span>, <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">27</span> &#125;,<br>                                <span class="hljs-string">&quot;text&quot;</span>: [&#123; <span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;March 12, 2021&quot;</span>, <span class="hljs-string">&quot;font&quot;</span>: <span class="hljs-string">&quot;font_1:0395&quot;</span> &#125;],<br>                                <span class="hljs-string">&quot;textColor&quot;</span>: [&#123; <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;end&quot;</span>: <span class="hljs-number">14</span>, <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;paint_1:0379&quot;</span> &#125;],<br>                                <span class="hljs-string">&quot;textAlign&quot;</span>: <span class="hljs-string">&quot;left&quot;</span>,<br>                                <span class="hljs-string">&quot;textMode&quot;</span>: <span class="hljs-string">&quot;single-line&quot;</span><br>                              &#125;<br>                            ],<br>                            <span class="hljs-string">&quot;flexContainerInfo&quot;</span>: &#123;<br>                              <span class="hljs-string">&quot;flexDirection&quot;</span>: <span class="hljs-string">&quot;column&quot;</span>,<br>                              <span class="hljs-string">&quot;mainSizing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>                              <span class="hljs-string">&quot;crossSizing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span><br>                            &#125;<br>                          &#125;<br>                        ],<br>                        <span class="hljs-string">&quot;flexContainerInfo&quot;</span>: &#123;<br>                          <span class="hljs-string">&quot;flexDirection&quot;</span>: <span class="hljs-string">&quot;row&quot;</span>,<br>                          <span class="hljs-string">&quot;alignItems&quot;</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>                          <span class="hljs-string">&quot;mainSizing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>                          <span class="hljs-string">&quot;crossSizing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>                          <span class="hljs-string">&quot;gap&quot;</span>: <span class="hljs-string">&quot;10px&quot;</span><br>                        &#125;<br>                      &#125;<br>                    ]<br>                  &#125;,<br>                  &#123;<br>                    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;FRAME&quot;</span>,<br>                    <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0232&quot;</span>,<br>                    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;bi:arrow-right-short&quot;</span>,<br>                    <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">40</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">40</span>, <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">420</span> &#125;,<br>                    <span class="hljs-string">&quot;fill&quot;</span>: <span class="hljs-string">&quot;paint_1:0383&quot;</span>,<br>                    <span class="hljs-string">&quot;children&quot;</span>: [<br>                      &#123;<br>                        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;GROUP&quot;</span>,<br>                        <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0233&quot;</span>,<br>                        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Group&quot;</span>,<br>                        <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123;<br>                          <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">20.002233505249023</span>,<br>                          <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">17.50320053100586</span>,<br>                          <span class="hljs-string">&quot;relativeX&quot;</span>: <span class="hljs-number">10</span>,<br>                          <span class="hljs-string">&quot;relativeY&quot;</span>: <span class="hljs-number">11.248419761657715</span><br>                        &#125;,<br>                        <span class="hljs-string">&quot;children&quot;</span>: [<br>                          &#123;<br>                            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;PATH&quot;</span>,<br>                            <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-string">&quot;158:0234&quot;</span>,<br>                            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Vector&quot;</span>,<br>                            <span class="hljs-string">&quot;layoutStyle&quot;</span>: &#123; <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">20.002233505249023</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">17.50320053100586</span> &#125;,<br>                            <span class="hljs-string">&quot;path&quot;</span>: [<br>                              &#123;<br>                                <span class="hljs-string">&quot;fill&quot;</span>: <span class="hljs-string">&quot;paint_1:0387&quot;</span>,<br>                                <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-string">&quot;M6.96159e-30 8.75158C-1.11022e-15 8.42006 0.131696 8.10212 0.366117 7.8677C0.600537 7.63328 0.918479 7.50158 1.25 7.50158C1.25 7.50158 15.7325 7.50158 15.7325 7.50158C15.7325 7.50158 10.365 2.13658 10.365 2.13658C10.1303 1.90186 9.99842 1.58352 9.99842 1.25158C9.99842 0.91964 10.1303 0.601296 10.365 0.366579C10.5997 0.131863 10.9181 0 11.25 0C11.5819 0 11.9003 0.131863 12.135 0.366579C12.135 0.366579 19.635 7.86658 19.635 7.86658C19.7514 7.98269 19.8438 8.12063 19.9068 8.2725C19.9698 8.42436 20.0022 8.58716 20.0022 8.75158C20.0022 8.916 19.9698 9.0788 19.9068 9.23066C19.8438 9.38253 19.7514 9.52047 19.635 9.63658C19.635 9.63658 12.135 17.1366 12.135 17.1366C11.9003 17.3713 11.5819 17.5032 11.25 17.5032C10.9181 17.5032 10.5997 17.3713 10.365 17.1366C10.1303 16.9019 9.99842 16.5835 9.99842 16.2516C9.99842 15.9196 10.1303 15.6013 10.365 15.3666C10.365 15.3666 15.7325 10.0016 15.7325 10.0016C15.7325 10.0016 1.25 10.0016 1.25 10.0016C0.918479 10.0016 0.600537 9.86988 0.366117 9.63546C0.131696 9.40104 -1.11022e-15 9.0831 6.96159e-30 8.75158C6.96159e-30 8.75158 6.96159e-30 8.75158 6.96159e-30 8.75158Z&quot;</span><br>                              &#125;<br>                            ]<br>                          &#125;<br>                        ]<br>                      &#125;<br>                    ]<br>                  &#125;<br>                ],<br>                <span class="hljs-string">&quot;flexContainerInfo&quot;</span>: &#123;<br>                  <span class="hljs-string">&quot;flexDirection&quot;</span>: <span class="hljs-string">&quot;row&quot;</span>,<br>                  <span class="hljs-string">&quot;justifyContent&quot;</span>: <span class="hljs-string">&quot;space-between&quot;</span>,<br>                  <span class="hljs-string">&quot;mainSizing&quot;</span>: <span class="hljs-string">&quot;fixed&quot;</span>,<br>                  <span class="hljs-string">&quot;crossSizing&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>                  <span class="hljs-string">&quot;gap&quot;</span>: <span class="hljs-string">&quot;135px&quot;</span><br>                &#125;,<br>                <span class="hljs-string">&quot;borderRadius&quot;</span>: <span class="hljs-string">&quot;10px&quot;</span><br>              &#125;<br>            ],<br>            <span class="hljs-string">&quot;flexContainerInfo&quot;</span>: &#123;<br>              <span class="hljs-string">&quot;flexDirection&quot;</span>: <span class="hljs-string">&quot;column&quot;</span>,<br>              <span class="hljs-string">&quot;justifyContent&quot;</span>: <span class="hljs-string">&quot;space-between&quot;</span>,<br>              <span class="hljs-string">&quot;mainSizing&quot;</span>: <span class="hljs-string">&quot;fixed&quot;</span>,<br>              <span class="hljs-string">&quot;crossSizing&quot;</span>: <span class="hljs-string">&quot;fixed&quot;</span>,<br>              <span class="hljs-string">&quot;padding&quot;</span>: <span class="hljs-string">&quot;40px 20px 20px&quot;</span><br>            &#125;<br>          &#125;<br>        ],<br>        <span class="hljs-string">&quot;effect&quot;</span>: <span class="hljs-string">&quot;effect_1:0365&quot;</span>,<br>        <span class="hljs-string">&quot;flexContainerInfo&quot;</span>: &#123;<br>          <span class="hljs-string">&quot;flexDirection&quot;</span>: <span class="hljs-string">&quot;column&quot;</span>,<br>          <span class="hljs-string">&quot;justifyContent&quot;</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>          <span class="hljs-string">&quot;alignItems&quot;</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>          <span class="hljs-string">&quot;mainSizing&quot;</span>: <span class="hljs-string">&quot;fixed&quot;</span>,<br>          <span class="hljs-string">&quot;crossSizing&quot;</span>: <span class="hljs-string">&quot;fixed&quot;</span>,<br>          <span class="hljs-string">&quot;padding&quot;</span>: <span class="hljs-string">&quot;20px&quot;</span><br>        &#125;,<br>        <span class="hljs-string">&quot;borderRadius&quot;</span>: <span class="hljs-string">&quot;10px&quot;</span><br>      &#125;<br>    ],<br>    <span class="hljs-string">&quot;components&quot;</span>: []<br>  &#125;,<br>  <span class="hljs-string">&quot;componentDocumentLinks&quot;</span>: [],<br>  <span class="hljs-string">&quot;rules&quot;</span>: [<br>    <span class="hljs-string">&quot;token filed must be generated as a variable (colors, shadows, fonts, etc.) and the token field must be displayed in the comment&quot;</span>,<br>    <span class="hljs-string">&quot;\n            componentDocumentLinks is a list of frontend component documentation links used in the DSL layer, designed to help you understand how to use the components.\n            When it exists and is not empty, you need to use mcp__getComponentLink in a for loop to get the URL content of all components in the list, understand how to use the components, and generate code using the components.\n            For example: \n              ```js  \n                const componentDocumentLinks = [\n                  &#x27;https://example.com/ant/button.mdx&#x27;,\n                  &#x27;https://example.com/ant/button.mdx&#x27;\n                ]\n                for (const url of componentDocumentLinks) &#123;\n                  const componentLink = await mcp__getComponentLink(url);\n                  console.log(componentLink);\n                &#125;\n              ```\n          &quot;</span><br>  ]<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p><img src="/img2/masterGo_MCP_9.jpg" srcset="/img/loading.gif" lazyload alt="image"></p>
+</li>
+</ul>
+<h3 id="总结">总结</h3>
+<p>目前 masterGo MCP 生成代码的原材料是设计文件的 DSL 简单处理过一层之后的 DSL Object，AI 并不能根据原始图层来进行精确的布局，也不能生产动态内容的布局(包括文字个数动态变化，以及其他元素动态个数)，一方面 MCP 提供的 DSL Object 是基于图层信息的，非常杂乱，一方面目前的 AI 处理大量数据是有缺陷的。</p>
+<h3 id="实操参考：">实操参考：</h3>
+<p><a target="_blank" rel="noopener" href="https://mastergo.com/file/155675508499265?fileOpenFrom=home&amp;page_id=1%3A0">https://mastergo.com/file/155675508499265?fileOpenFrom=home&amp;page_id=1%3A0</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MCP/" class="category-chain-item">MCP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MasterGo/" class="print-no-link">#MasterGo</a>
+      
+        <a href="/tags/MCP/" class="print-no-link">#MCP</a>
+      
+        <a href="/tags/UI%E8%AE%BE%E8%AE%A1%E5%8C%BA%E5%AE%89%E7%9B%91/" class="print-no-link">#UI设计区安监</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MasterGo MCP 尝试</div>
+      <div>https://march-wind.github.io/2025/05/15/masterGo_MCP/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Liu Zhiyang</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/15/ocr/%E9%83%A8%E7%BD%B2paddlex,%E8%AF%86%E5%88%AB%E6%96%87%E5%AD%97/" title="部署paddlex,识别文字">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">部署paddlex,识别文字</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/15/ECharts%E7%BA%BF%E6%9D%A1%E7%B2%BE%E7%A1%AE%E4%BA%A4%E4%BA%92%E6%BC%94%E7%A4%BA/" title="ECharts 线条精确交互演示 (PC/移动端)">
+                        <span class="hidden-mobile">ECharts 线条精确交互演示 (PC/移动端)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      沪ICP备2024044145号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502400802"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>沪公网安备31011502400802</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
