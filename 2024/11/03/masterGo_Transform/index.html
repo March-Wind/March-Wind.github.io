@@ -19,23 +19,25 @@
   <meta name="author" content="Liu Zhiyang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="🌐 nginx 配置 📁 静态资源文件配置(适用 SPA 项目) 使用 location 进行 url 映射本机资源，^~是前缀匹配，并且命中了，就不会去后面继续匹配规则了。由于我们可能有很多的静态资源项目，所以只在当前的 location 里，把匹配到 url 的部分路径替换&#x2F;www&#x2F;wwwroot&#x2F;chat&#x2F;chat_web&#x2F;。比如访问https:&#x2F;&#x2F;qunyangbang.cn&#x2F;chat">
+    <meta name="description" content="DSL 中 relativeTransform 对象 12345678910[  [0.7071067690849304, 0.7071067690849304, 64.82373046875],  [-0.7071067690849304, 0.7071067690849304, 46.4097900390625]]&#x2F;** * [ *   [a, c, tx], *   [b, d, ty] *">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nginx 基础配置">
-<meta property="og:url" content="https://march-wind.github.io/2024/10/05/nginx%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="MasterGo DSL Transform 属性转换（Figma 也是如此）">
+<meta property="og:url" content="https://march-wind.github.io/2024/11/03/masterGo_Transform/index.html">
 <meta property="og:site_name" content="March的博客">
-<meta property="og:description" content="🌐 nginx 配置 📁 静态资源文件配置(适用 SPA 项目) 使用 location 进行 url 映射本机资源，^~是前缀匹配，并且命中了，就不会去后面继续匹配规则了。由于我们可能有很多的静态资源项目，所以只在当前的 location 里，把匹配到 url 的部分路径替换&#x2F;www&#x2F;wwwroot&#x2F;chat&#x2F;chat_web&#x2F;。比如访问https:&#x2F;&#x2F;qunyangbang.cn&#x2F;chat">
+<meta property="og:description" content="DSL 中 relativeTransform 对象 12345678910[  [0.7071067690849304, 0.7071067690849304, 64.82373046875],  [-0.7071067690849304, 0.7071067690849304, 46.4097900390625]]&#x2F;** * [ *   [a, c, tx], *   [b, d, ty] *">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://march-wind.github.io/img/nginx-log.png">
-<meta property="article:published_time" content="2024-10-05T07:35:00.000Z">
-<meta property="article:modified_time" content="2025-10-15T03:48:02.137Z">
+<meta property="og:image" content="https://march-wind.github.io/img/mg-logo.png">
+<meta property="article:published_time" content="2024-11-03T11:54:06.000Z">
+<meta property="article:modified_time" content="2025-10-23T08:23:27.598Z">
 <meta property="article:author" content="Liu Zhiyang">
+<meta property="article:tag" content="MasterGo">
+<meta property="article:tag" content="CSS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://march-wind.github.io/img/nginx-log.png">
+<meta name="twitter:image" content="https://march-wind.github.io/img/mg-logo.png">
   
   
   
-  <title>nginx 基础配置 - March的博客</title>
+  <title>MasterGo DSL Transform 属性转换（Figma 也是如此） - March的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +207,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="nginx 基础配置"></span>
+            <span id="subtitle" data-typed-text="MasterGo DSL Transform 属性转换（Figma 也是如此）"></span>
           
         </div>
 
@@ -216,8 +218,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-05 15:35" pubdate>
-          2024年10月5日 下午
+        <time datetime="2024-11-03 19:54" pubdate>
+          2024年11月3日 晚上
         </time>
       </span>
     
@@ -228,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          873 字
+          588 字
         
       </span>
     
@@ -239,7 +241,7 @@
         
         
         
-          8 分钟
+          5 分钟
         
       </span>
     
@@ -276,35 +278,72 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">nginx 基础配置</h1>
+            <h1 id="seo-header">MasterGo DSL Transform 属性转换（Figma 也是如此）</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="🌐-nginx-配置">🌐 nginx 配置</h2>
-<h3 id="📁-静态资源文件配置-适用-SPA-项目">📁 静态资源文件配置(适用 SPA 项目)</h3>
-<p>使用 location 进行 url 映射本机资源，^~是前缀匹配，并且命中了，就不会去后面继续匹配规则了。由于我们可能有很多的静态资源项目，所以只在当前的 location 里，把匹配到 url 的部分路径替换/www/wwwroot/chat/chat_web/。比如访问<code>https://qunyangbang.cn/chat_web/new-chat</code>，在 nginx 这层就会变成访问<code>/www/wwwroot/chat/chat_web/new-chat</code>。<code>autoindex</code> 是当路径访问的资源没有时，会尝试某个路径下的 <code>index.html</code>。<code>try_files</code> 是按照制定顺序查看文件，<code>try_files $uri $uri/ /chat_web/index.html;</code>这里就是先是原路径($uri)，再尝试路径下的 index.html($uri/,因为开启了 autoindex,就是给这里用的)，最后尝试访问绝对路径(/chat_web/index.html，访问这个路径，nginx 会把他仿作新的内部请求，重新进行 location 匹配，然后就能找到资源了)。</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">server &#123;<br>  <span class="hljs-string">...</span><br>  <span class="hljs-string">...</span><br>  <span class="hljs-string">...</span><br><br>  location ^~<span class="hljs-string">/chat_web/</span> &#123;<br>    <span class="hljs-keyword">alias</span> <span class="hljs-string">/www/wwwroot/chat/chat_web/</span>;<br>    autoindex on;<br>    <span class="hljs-keyword">try</span>_files $uri $uri/ <span class="hljs-string">/chat_web/index.html</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="⚡-静态资源性能优化">⚡ 静态资源性能优化</h3>
-<ol>
-<li>
-<p>🗜️ 开启 Gzip，压缩资源文件，提高传输效率</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript">http&#123;<br>    gzip <span class="hljs-literal">on</span>; <span class="hljs-comment"># 开始gzip</span><br>    gzip_min_length  <span class="hljs-number">1</span>k; <span class="hljs-comment"># 只有当文件大小 ≥ 1KB 时才进行gzip压缩</span><br>    gzip_buffers     <span class="hljs-number">4</span> <span class="hljs-number">16</span>k; <span class="hljs-comment"># 设置gzip压缩的缓冲区，使用 4 个 16KB 的缓冲区来存储压缩数据</span><br>    gzip_http_version <span class="hljs-number">1.1</span>; <span class="hljs-comment"># 指定启用gzip压缩的HTTP协议版本，HTTP/2：也会进行gzip压缩</span><br>    gzip_comp_level <span class="hljs-number">2</span>; <span class="hljs-comment"># 设置gzip压缩级别，1-9（1最快但压缩率最低，9最慢但压缩率最高）</span><br>    gzip_types     <span class="hljs-comment"># text/plain application/javascript application/x-javascript text/javascript text/css application/xml; # 指定需要压缩的MIME类型</span><br>    gzip_vary <span class="hljs-literal">on</span>; <span class="hljs-comment"># 添加Vary: Accept-Encoding响应头，告诉缓存服务器根据客户端是否支持压缩来缓存不同版本</span><br>    gzip_proxied   expired <span class="hljs-literal">no</span>-cache <span class="hljs-literal">no</span>-store private auth; <span class="hljs-comment"># 在什么情况下对代理请求进行压缩(响应头包含过期时间的请求、响应头包含Cache-Control: no-cache的请求，等)</span><br>    gzip_disable   <span class="hljs-string">&quot;MSIE [1-6]\.&quot;</span>; <span class="hljs-comment"># 禁用特定浏览器的gzip压缩，对IE 1-6版本的浏览器禁用gzip</span><br>&#125;<br></code></pre></td></tr></table></figure>
-</li>
-<li>
-<p>💾 图片/CSS/JS 缓存</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123;<br><br>   <span class="hljs-comment"># JS/CSS 文件的专门 location</span><br>     <span class="hljs-section">location</span> ~_<span class="hljs-regexp"> ^/chat_web/._\.(js|css)$</span> &#123;<br>     <span class="hljs-attribute">alias</span> /www/wwwroot/chat/chat_web/;<br>     <span class="hljs-attribute">expires</span> <span class="hljs-number">1y</span>;<br>     <span class="hljs-attribute">add_header</span> Cache-Control <span class="hljs-string">&quot;public, max-age=31536000, immutable&quot;</span>;<br>   &#125;<br><br>   <span class="hljs-comment"># 图片文件的专门 location</span><br>   <span class="hljs-section">location</span> ~_<span class="hljs-regexp"> ^/chat_web/._\.(jpg|jpeg|png|gif|ico|svg)$</span> &#123;<br>     <span class="hljs-attribute">alias</span> /www/wwwroot/chat/chat_web/;<br>     <span class="hljs-attribute">expires</span> <span class="hljs-number">3M</span>;<br>     <span class="hljs-attribute">add_header</span> Cache-Control <span class="hljs-string">&quot;public, max-age=7776000&quot;</span>;<br>   &#125;<br><br>   <span class="hljs-comment"># 路由专用 location</span><br>   <span class="hljs-section">location</span><span class="hljs-regexp"> ^~</span> /chat_web/ &#123;<br>     <span class="hljs-attribute">alias</span> /www/wwwroot/chat/chat_web/;<br>     <span class="hljs-attribute">autoindex</span> <span class="hljs-literal">on</span>;<br>     <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /chat_web/index.html;<br>   &#125;<br><br> &#125;<br></code></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="🔗-后端接口服务">🔗 后端接口服务</h3>
-<p>直接使用 proxy_pass 代理到本机的某个端口就行了。</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># chat项目的后端</span><br><span class="hljs-section">location</span><span class="hljs-regexp"> ^~</span> /chat_server/ &#123;<br>  <span class="hljs-attribute">proxy_pass</span> http://127.0.0.1:4001/;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-<h3 id="🔒-SSL-证书配置">🔒 SSL 证书配置</h3>
-<blockquote>
-<p>SSL 证书还是挺贵的，可以使用 Let’s Encrypt 的证书证书，参考链接：<a target="_blank" rel="noopener" href="https://diamondfsd.com/lets-encrytp-hand-https/#google_vignette">https://diamondfsd.com/lets-encrytp-hand-https/#google_vignette</a></p>
-</blockquote>
-<p>这里使用的是 307,因为 307 的转发可以保留所有的参数，比如 method 为 POST，301 会变成 GET 请求，307 会继续保持 POST。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs awk">http &#123;<br><br>    ...<br>    ...<br><br>    server &#123;<br>      listen <span class="hljs-number">80</span>;<br>      server_name qunyangbang.cn www.qunyangbang.cn m.qunyangbang.cn;<br>      root <span class="hljs-regexp">/www/</span>wwwroot;<br>      <span class="hljs-comment"># 重定向所有 HTTP 请求到 HTTPS</span><br>        return <span class="hljs-number">307</span> https:<span class="hljs-regexp">//</span><span class="hljs-variable">$server_name</span><span class="hljs-variable">$request_uri</span>;<br>    &#125;<br><br>    server &#123;<br>        <span class="hljs-comment">#SSL 默认访问端口号为 443</span><br>        listen <span class="hljs-number">443</span> ssl;<br>        <span class="hljs-comment">#请填写绑定证书的域名,这个证书是单域名的</span><br>        server_name qunyangbang.cn www.qunyangbang.cn;<br>        <span class="hljs-comment">#请填写证书文件的相对路径或绝对路径</span><br>        ssl_certificate <span class="hljs-regexp">/www/</span>server<span class="hljs-regexp">/panel/</span>vhost<span class="hljs-regexp">/cert/</span>qunyangbang.cn_bundle.crt;<br>        <span class="hljs-comment">#请填写私钥文件的相对路径或绝对路径</span><br>        ssl_certificate_key <span class="hljs-regexp">/www/</span>server<span class="hljs-regexp">/panel/</span>vhost<span class="hljs-regexp">/cert/</span>qunyangbang.cn.key;<br>        ssl_session_timeout <span class="hljs-number">5</span>m;<br>        <span class="hljs-comment">#请按照以下协议配置</span><br>        ssl_protocols TLSv1.<span class="hljs-number">2</span> TLSv1.<span class="hljs-number">3</span>;<br>        <span class="hljs-comment">#请按照以下套件配置，配置加密套件，写法遵循 openssl 标准。</span><br>        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;<br>        ssl_prefer_server_ciphers on;<br>        location / &#123;<br>            return <span class="hljs-number">301</span> https:<span class="hljs-regexp">//</span>www.qunyangbang.cn;<br>            root <span class="hljs-regexp">/www/</span>wwwroot;<br>            index  index.html index.htm;<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+                <h3 id="DSL-中-relativeTransform-对象">DSL 中 relativeTransform 对象</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs JAVASCRIPT">[<br>  [<span class="hljs-number">0.7071067690849304</span>, <span class="hljs-number">0.7071067690849304</span>, <span class="hljs-number">64.82373046875</span>],<br>  [-<span class="hljs-number">0.7071067690849304</span>, <span class="hljs-number">0.7071067690849304</span>, <span class="hljs-number">46.4097900390625</span>]<br>]<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * [</span><br><span class="hljs-comment"> *   [a, c, tx],</span><br><span class="hljs-comment"> *   [b, d, ty]</span><br><span class="hljs-comment"> * ]</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
+<p>这是一个典型的 2×3 仿射变换矩阵（Affine Transform），与 CSS 中的 transform 几乎一样。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs CSS"><span class="hljs-comment">/* transform: matrix(a, b, c, d, tx, ty); */</span><br><span class="hljs-attribute">transform</span>: <span class="hljs-built_in">matrix</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+<p><small>MasterGo 和 Figma 的 relativeTransform 与 CSS 中的 <code>transform: matrix()</code> 一样，Y 轴的正方向是向下；而 CSS 中的 <code>transform: rotate(45deg)</code> 的 Y 轴正方向是向上，两者不同。</small></p>
+<table>
+<thead>
+<tr>
+<th>含义</th>
+<th>CSS <code>matrix(a,b,c,d,tx,ty)</code></th>
+<th>Figma <code>relativeTransform</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一行第一列</td>
+<td>a</td>
+<td>matrix[0][0]</td>
+</tr>
+<tr>
+<td>第二行第一列</td>
+<td>b</td>
+<td>matrix[1][0]</td>
+</tr>
+<tr>
+<td>第一行第二列</td>
+<td>c</td>
+<td>matrix[0][1]</td>
+</tr>
+<tr>
+<td>第二行第二列</td>
+<td>d</td>
+<td>matrix[1][1]</td>
+</tr>
+<tr>
+<td>第一行第三列</td>
+<td>tx</td>
+<td>matrix[0][2]</td>
+</tr>
+<tr>
+<td>第二行第三列</td>
+<td>ty</td>
+<td>matrix[1][2]</td>
+</tr>
+</tbody>
+</table>
+<p>更清晰的对照：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-comment">// CSS → Figma</span><br>[<br>  [a, c, tx],<br>  [b, <span class="hljs-keyword">d</span>, <span class="hljs-keyword">ty</span>]<br>]<br><br><span class="hljs-comment">// Figma → CSS</span><br><span class="hljs-built_in">matrix</span>(a, b, c, <span class="hljs-keyword">d</span>, tx, <span class="hljs-keyword">ty</span>)<br><br></code></pre></td></tr></table></figure>
+<h3 id="DSL-中-relativeTransform、CSS-中-matrix-和单一属性转换">DSL 中 relativeTransform、CSS 中 matrix 和单一属性转换</h3>
+<ul>
+<li>relativeTransform2SingleAttribute</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">relativeTransform2SingleAttribute</span>(<span class="hljs-params">matrix</span>) &#123;<br>  <span class="hljs-keyword">const</span> [[a, c, tx], [b, d, ty]] = matrix;<br><br>  <span class="hljs-keyword">const</span> translation = &#123; <span class="hljs-attr">x</span>: tx, <span class="hljs-attr">y</span>: ty &#125;;<br><br>  <span class="hljs-keyword">const</span> scaleX = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(a * a + b * b);<br>  <span class="hljs-keyword">const</span> scaleY = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(c * c + d * d);<br><br>  <span class="hljs-comment">// CSS 设置单一属性时，rotate 的 Y 轴正向相反</span><br>  <span class="hljs-keyword">const</span> rotation = -<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">atan2</span>(b / scaleX, a / scaleX) * (<span class="hljs-number">180</span> / <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>);<br><br>  <span class="hljs-comment">// 修正浮点误差</span><br>  <span class="hljs-keyword">const</span> <span class="hljs-title function_">fix</span> = (<span class="hljs-params">n</span>) =&gt; <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">abs</span>(n - <span class="hljs-number">1</span>) &lt; <span class="hljs-number">1e-6</span> ? <span class="hljs-number">1</span> : n;<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    rotation,<br>    <span class="hljs-attr">scale</span>: &#123; <span class="hljs-attr">x</span>: <span class="hljs-title function_">fix</span>(scaleX), <span class="hljs-attr">y</span>: <span class="hljs-title function_">fix</span>(scaleY) &#125;,<br>    translation,<br>  &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>在 MasterGo 中，目前存在这样的问题：变换后，DSL 导出的宽高仍是原始元素的宽高，并非外接矩形的宽高；但下载出来的元素却是外接矩形的图片，因此需要手动计算外接矩形宽高。</li>
+</ul>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs gml"><span class="hljs-comment">// 传入 MasterGo DSL 的矩阵</span><br><span class="hljs-comment">// 输出结果仍然要向上取整，因为下载的图片宽高没有小数点，均向上取整。</span><br><span class="hljs-keyword">function</span> getBoundingBoxAfterTransform(matrix, width, height) &#123;<br>  const [[a, c, tx], [b, d, ty]] = matrix;<br><br>  <span class="hljs-comment">// 原始矩形的四个顶点</span><br>  const points = [<br>    &#123; <span class="hljs-variable language_">x</span>: <span class="hljs-number">0</span>, <span class="hljs-variable language_">y</span>: <span class="hljs-number">0</span> &#125;,<br>    &#123; <span class="hljs-variable language_">x</span>: width, <span class="hljs-variable language_">y</span>: <span class="hljs-number">0</span> &#125;,<br>    &#123; <span class="hljs-variable language_">x</span>: <span class="hljs-number">0</span>, <span class="hljs-variable language_">y</span>: height &#125;,<br>    &#123; <span class="hljs-variable language_">x</span>: width, <span class="hljs-variable language_">y</span>: height &#125;,<br>  ];<br><br>  <span class="hljs-comment">// 经过变换后的点</span><br>  const transformed = points.map(p =&gt; (&#123;<br>    <span class="hljs-variable language_">x</span>: a * p.<span class="hljs-variable language_">x</span> + c * p.<span class="hljs-variable language_">y</span> + tx,<br>    <span class="hljs-variable language_">y</span>: b * p.<span class="hljs-variable language_">x</span> + d * p.<span class="hljs-variable language_">y</span> + ty<br>  &#125;));<br><br>  <span class="hljs-comment">// 求 min / max</span><br>  const xs = transformed.map(p =&gt; p.<span class="hljs-variable language_">x</span>);<br>  const ys = transformed.map(p =&gt; p.<span class="hljs-variable language_">y</span>);<br><br>  const minX = Math.<span class="hljs-built_in">min</span>(...xs);<br>  const maxX = Math.<span class="hljs-built_in">max</span>(...xs);<br>  const minY = Math.<span class="hljs-built_in">min</span>(...ys);<br>  const maxY = Math.<span class="hljs-built_in">max</span>(...ys);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    width: maxX - minX,<br>    height: maxY - minY,<br>  &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>把 rotation + scale + translation 重新组合成 MasterGo 的 relativeTransform</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">composeRelativeTransform</span>(<span class="hljs-params">&#123; rotation, scale, translation &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> rad = -rotation * <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">180</span>; <span class="hljs-comment">// 取反，因为 CSS 单独设置 rotate 时的 Y 轴方向与此相反。</span><br><br>  <span class="hljs-keyword">const</span> a = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">cos</span>(rad) * scale.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> b = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(rad) * scale.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> c = -<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(rad) * scale.<span class="hljs-property">y</span>;<br>  <span class="hljs-keyword">const</span> d = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">cos</span>(rad) * scale.<span class="hljs-property">y</span>;<br><br>  <span class="hljs-keyword">const</span> tx = translation.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> ty = translation.<span class="hljs-property">y</span>;<br><br>  <span class="hljs-keyword">return</span> [<br>    [a, c, tx],<br>    [b, d, ty],<br>  ];<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -323,7 +362,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/nodejs/" class="category-chain-item">nodejs</a>
+  <a href="/categories/MasterGo/" class="category-chain-item">MasterGo</a>
   
   
 
@@ -335,6 +374,15 @@
     </div>
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MasterGo/" class="print-no-link">#MasterGo</a>
+      
+        <a href="/tags/CSS/" class="print-no-link">#CSS</a>
+      
+    </div>
+  
 </div>
 
 
@@ -343,8 +391,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>nginx 基础配置</div>
-      <div>https://march-wind.github.io/2024/10/05/nginx配置/</div>
+      <div>MasterGo DSL Transform 属性转换（Figma 也是如此）</div>
+      <div>https://march-wind.github.io/2024/11/03/masterGo_Transform/</div>
     </div>
     <div class="license-meta">
       
@@ -356,7 +404,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月5日</div>
+          <div>2024年11月3日</div>
         </div>
       
       
@@ -388,9 +436,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/11/03/masterGo_Transform/" title="MasterGo DSL Transform 属性转换（Figma 也是如此）">
+                      <a href="/2025/03/15/ECharts%E7%BA%BF%E6%9D%A1%E7%B2%BE%E7%A1%AE%E4%BA%A4%E4%BA%92%E6%BC%94%E7%A4%BA/" title="ECharts 线条精确交互演示 (PC/移动端)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MasterGo DSL Transform 属性转换（Figma 也是如此）</span>
+                        <span class="hidden-mobile">ECharts 线条精确交互演示 (PC/移动端)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -398,8 +446,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/06/06/JWT%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/" title="JWT登录系统">
-                        <span class="hidden-mobile">JWT登录系统</span>
+                      <a href="/2024/10/05/nginx%E9%85%8D%E7%BD%AE/" title="nginx 基础配置">
+                        <span class="hidden-mobile">nginx 基础配置</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -456,12 +504,6 @@
 
 
   
-
-
-  
-  
-
-
 
 
 
@@ -678,49 +720,6 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
