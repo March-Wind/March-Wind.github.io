@@ -4,8 +4,7 @@ date: 2025-5-15 20:08:46
 tags:
   - MasterGo
   - MCP
-  - UI设计区安监
-categories: MCP
+categories: MasterGo
 index_img: /img/mg-logo.png
 ---
 
