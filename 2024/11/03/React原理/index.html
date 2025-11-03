@@ -19,23 +19,24 @@
   <meta name="author" content="Liu Zhiyang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="阅读源码步骤：  阅读官网，  原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。   api 都使用一遍  原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。   阅读开发工作组的讨论贴  原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有">
+    <meta name="description" content="React Fiber React 15 之前是 stack Reconciler，也就是从虚拟 DOM 的根节点递归遍历所有节点进行跟旧的节点对比，记录所有差异，进行更新，然后立即执行更改，直到更新完成。但是在大组件树更新的时候，就有长期占据主线程，导致页面响应不了，并且有掉帧。 React 16 开发引入了 Fiber 架构，把比较虚拟 DOM 并记录变更阶段的任务拆分成小任务，然后根据优先级">
 <meta property="og:type" content="article">
-<meta property="og:title" content="阅读源码步骤">
-<meta property="og:url" content="https://march-wind.github.io/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/index.html">
+<meta property="og:title" content="React原理">
+<meta property="og:url" content="https://march-wind.github.io/2024/11/03/React%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="March的博客">
-<meta property="og:description" content="阅读源码步骤：  阅读官网，  原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。   api 都使用一遍  原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。   阅读开发工作组的讨论贴  原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有">
+<meta property="og:description" content="React Fiber React 15 之前是 stack Reconciler，也就是从虚拟 DOM 的根节点递归遍历所有节点进行跟旧的节点对比，记录所有差异，进行更新，然后立即执行更改，直到更新完成。但是在大组件树更新的时候，就有长期占据主线程，导致页面响应不了，并且有掉帧。 React 16 开发引入了 Fiber 架构，把比较虚拟 DOM 并记录变更阶段的任务拆分成小任务，然后根据优先级">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://march-wind.github.io/img/read-code-index.png">
-<meta property="article:published_time" content="2024-03-11T05:20:18.000Z">
-<meta property="article:modified_time" content="2025-10-15T03:48:02.144Z">
+<meta property="og:image" content="https://march-wind.github.io/img/react-logo.png">
+<meta property="article:published_time" content="2024-11-03T11:54:06.000Z">
+<meta property="article:modified_time" content="2025-11-03T10:08:34.741Z">
 <meta property="article:author" content="Liu Zhiyang">
+<meta property="article:tag" content="React">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://march-wind.github.io/img/read-code-index.png">
+<meta name="twitter:image" content="https://march-wind.github.io/img/react-logo.png">
   
   
   
-  <title>阅读源码步骤 - March的博客</title>
+  <title>React原理 - March的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="没有方法的阅读源码，会很痛苦"></span>
+            <span id="subtitle" data-typed-text="React原理"></span>
           
         </div>
 
@@ -216,8 +217,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-11 13:20" pubdate>
-          2024年3月11日 下午
+        <time datetime="2024-11-03 19:54" pubdate>
+          2024年11月3日 晚上
         </time>
       </span>
     
@@ -228,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          343 字
+          444 字
         
       </span>
     
@@ -239,7 +240,7 @@
         
         
         
-          3 分钟
+          4 分钟
         
       </span>
     
@@ -276,51 +277,62 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">没有方法的阅读源码，会很痛苦</h1>
+            <h1 id="seo-header">React原理</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="阅读源码步骤：">阅读源码步骤：</h3>
+                <h3 id="React-Fiber">React Fiber</h3>
+<p>React 15 之前是 stack Reconciler，也就是从虚拟 DOM 的根节点递归遍历所有节点进行跟旧的节点对比，记录所有差异，进行更新，然后立即执行更改，直到更新完成。但是在大组件树更新的时候，就有长期占据主线程，导致页面响应不了，并且有掉帧。<br>
+React 16 开发引入了 Fiber 架构，把比较虚拟 DOM 并记录变更阶段的任务拆分成小任务，然后根据优先级，每执行一小段时间(5ms)，就提交这些更新，交给浏览器先去绘制 DOM、响应用户输入。</p>
+<h4 id="辨析">辨析</h4>
 <ol>
-<li>阅读官网，
-<blockquote>
-<p>原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。</p>
-</blockquote>
+<li>
+<p>React 并没有提高渲染性能，反而降低的渲染性能，因为中间还要对比虚拟 DOM。只是让视图更新更高效、更可维护。高效是声明式 UI 的高效，是开发阶段的高效，不是渲染阶段的高效。</p>
 </li>
-<li>api 都使用一遍
-<blockquote>
-<p>原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。</p>
-</blockquote>
+<li>
+<p>浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 检查 DOM、样式、布局、绘制，如果一帧内完成所有工作 → 流畅；超过 16ms → 丢帧、卡顿。<br>
+一个典型的帧（Frame）大致包括以下阶段：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>名称</th>
+<th>是否占用主线程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1️⃣ JS 执行阶段</td>
+<td>运行脚本，操作 DOM、修改样式</td>
+<td>✅ 占用</td>
+</tr>
+<tr>
+<td>2️⃣ Style 阶段</td>
+<td>重新计算 CSS 样式（Recalculate Style）</td>
+<td>✅ 占用</td>
+</tr>
+<tr>
+<td>3️⃣ Layout 阶段</td>
+<td>重新计算元素几何位置（Reflow / Layout）</td>
+<td>✅ 占用</td>
+</tr>
+<tr>
+<td>4️⃣ Paint 阶段</td>
+<td>绘制像素信息到图层</td>
+<td>✅ 占用</td>
+</tr>
+<tr>
+<td>5️⃣ Composite 阶段</td>
+<td>GPU 合成各图层显示</td>
+<td>✅ 部分并行，可异步</td>
+</tr>
+</tbody>
+</table>
+<p>如果执行 DOM 操作，增删改产和样式修改，是不会立刻绘制的，先放在渲染队列</p>
 </li>
-<li>阅读开发工作组的讨论贴
-<blockquote>
-<p>原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有助于知道源码为什么这么实现。看源码的时候就能减少很多疑问和卡点。</p>
-</blockquote>
-</li>
-<li>从入口 debug 源码：
-<ul>
-<li>技巧：
-<ol>
-<li>主要找到几个关键节点，和执行结尾，对变量的记忆，不理解也没关系</li>
-<li>对没见过的 api 或算法扫盲，增加熟悉程度。</li>
 </ol>
-</li>
-</ul>
-</li>
-<li>直接阅读源码：
-<ul>
-<li>技巧：
-<ol>
-<li>变量命名要搞懂，库的命名一般都很精确，弄懂命名的字面意思有助于理解意图。</li>
-<li>阅读注释，有助于理解亿图。</li>
-<li>不理解的变量可以通过 vs code 的 Find All References 来找到使用位置，看看每个使用位置的上下文，有助于理解。</li>
-<li>多读 5. 通过使用 api 方式再次 debug，加深理解。</li>
-</ol>
-</li>
-</ul>
-</li>
-</ol>
+<p>包含从 JS 执行到计算布局和样式，最后显示在</p>
 
                 
               </div>
@@ -339,7 +351,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/other/" class="category-chain-item">other</a>
+  <a href="/categories/React/" class="category-chain-item">React</a>
   
   
 
@@ -351,6 +363,13 @@
     </div>
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/React/" class="print-no-link">#React</a>
+      
+    </div>
+  
 </div>
 
 
@@ -359,8 +378,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>阅读源码步骤</div>
-      <div>https://march-wind.github.io/2024/03/11/阅读源码渐进步骤/</div>
+      <div>React原理</div>
+      <div>https://march-wind.github.io/2024/11/03/React原理/</div>
     </div>
     <div class="license-meta">
       
@@ -372,7 +391,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年3月11日</div>
+          <div>2024年11月3日</div>
         </div>
       
       
@@ -404,9 +423,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/05/14/mongodb%E9%83%A8%E7%BD%B2/" title="mongodb在腾讯云部署和使用">
+                      <a href="/2024/11/03/masterGo_Transform/" title="MasterGo DSL Transform 属性转换（Figma 也是如此）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mongodb在腾讯云部署和使用</span>
+                        <span class="hidden-mobile">MasterGo DSL Transform 属性转换（Figma 也是如此）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -414,8 +433,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/12/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/" title="浏览器渲染机制">
-                        <span class="hidden-mobile">浏览器渲染机制</span>
+                      <a href="/2024/10/05/nginx%E9%85%8D%E7%BD%AE/" title="nginx 基础配置">
+                        <span class="hidden-mobile">nginx 基础配置</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
