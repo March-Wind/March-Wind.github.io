@@ -229,23 +229,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" target="_self">
-          <img src="/img/read-code-index.png" srcset="/img/loading.gif" lazyload alt="阅读源码步骤">
+        <a href="/2024/01/10/React%20Scheduler/" target="_self">
+          <img src="/img/react-logo.png" srcset="/img/loading.gif" lazyload alt="React Scheduler">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" target="_self">
-          阅读源码步骤
+        <a href="/2024/01/10/React%20Scheduler/" target="_self">
+          React Scheduler
         </a>
       </h2>
 
       
-      <a class="index-excerpt " href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" target="_self">
+      <a class="index-excerpt " href="/2024/01/10/React%20Scheduler/" target="_self">
         <div>
-          阅读源码步骤：  阅读官网，  原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。   api 都使用一遍  原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。   阅读开发工作组的讨论贴  原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有
+          useState 后的链路 123456789101112131415161718dispatchSetStatedispatchSetStateInternal 创建更新对象 Update ,还会判断最后一次值和当前值是否一致，如果一致，跳过渲染，不一致的话enqueueConcurrentHookUpdate 增加到临时队列，后续会增加到 Fiber.queue.pending 上，sched
         </div>
       </a>
 
@@ -253,8 +253,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-11 13:20" pubdate>
-              2024-03-11
+            <time datetime="2024-01-10 19:54" pubdate>
+              2024-01-10
             </time>
           </div>
         
@@ -269,7 +269,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/other/" class="category-chain-item">other</a>
+  <a href="/categories/React/" class="category-chain-item">React</a>
   
   
 
@@ -280,6 +280,13 @@
 
           </div>
         
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/React/">#React</a>
+            
+          </div>
         
       </div>
     </article>
@@ -305,7 +312,7 @@
       
       <a class="index-excerpt " href="/2023/12/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/" target="_self">
         <div>
-          机制 浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。 一个典型的帧（Frame）大致包括以下阶段：    阶段 名称 是否占用主线程     1️⃣ JS 执行阶段 运行脚本，操作 DOM、修改样式 ✅ 占用   2️⃣ Style 阶段 重新计算 CSS 样式（Re
+          机制 浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。如果只插入一个简单的 span，肯定不需要 16.6ms 就执行能执行完，但是也要等到下一帧渲染，此时也没有计算布局(Layout 阶段 )，也没有绘制(Paint 阶段)。 一个典型的帧（Frame）大致包括以下阶
         </div>
       </a>
 
@@ -357,7 +364,7 @@
     
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2023/11/20/React-Schedule/" target="_self">
-          <img src="/img/react-logo.png" srcset="/img/loading.gif" lazyload alt="React Schedule">
+          <img src="/img/react-logo.png" srcset="/img/loading.gif" lazyload alt="React Schedule源码阅读">
         </a>
       </div>
     
@@ -365,7 +372,7 @@
       <h2 class="index-header">
         
         <a href="/2023/11/20/React-Schedule/" target="_self">
-          React Schedule
+          React Schedule源码阅读
         </a>
       </h2>
 
@@ -397,6 +404,66 @@
       <span class="category-chain">
         
   <a href="/categories/React/" class="category-chain-item">React</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" target="_self">
+          <img src="/img/read-code-index.png" srcset="/img/loading.gif" lazyload alt="阅读源码步骤">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" target="_self">
+          阅读源码步骤
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2023/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" target="_self">
+        <div>
+          阅读源码步骤：  阅读官网，  原因：官网会交代这个库是解决什么问题的,引入什么概念。阅读一些 api，也有助于拼凑这个库的印象。   api 都使用一遍  原因：api 就是暴露出来的功能，源码是实现这些功能的过程，使用 api，然后基于自己的知识猜想实现过程，有助于对源码细节的理解，猜错也没关系。   阅读开发工作组的讨论贴  原因：讨论帖中常常会贴出一些问题，然后指出解决方案，充分的阅读，有
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-11 13:20" pubdate>
+              2023-03-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/other/" class="category-chain-item">other</a>
   
   
 

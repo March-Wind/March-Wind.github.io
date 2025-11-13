@@ -19,16 +19,16 @@
   <meta name="author" content="Liu Zhiyang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="机制 浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。 一个典型的帧（Frame）大致包括以下阶段：    阶段 名称 是否占用主线程     1️⃣ JS 执行阶段 运行脚本，操作 DOM、修改样式 ✅ 占用   2️⃣ Style 阶段 重新计算 CSS 样式（Re">
+    <meta name="description" content="机制 浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。如果只插入一个简单的 span，肯定不需要 16.6ms 就执行能执行完，但是也要等到下一帧渲染，此时也没有计算布局(Layout 阶段 )，也没有绘制(Paint 阶段)。 一个典型的帧（Frame）大致包括以下阶">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浏览器渲染机制">
 <meta property="og:url" content="https://march-wind.github.io/2023/12/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="March的博客">
-<meta property="og:description" content="机制 浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。 一个典型的帧（Frame）大致包括以下阶段：    阶段 名称 是否占用主线程     1️⃣ JS 执行阶段 运行脚本，操作 DOM、修改样式 ✅ 占用   2️⃣ Style 阶段 重新计算 CSS 样式（Re">
+<meta property="og:description" content="机制 浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。如果只插入一个简单的 span，肯定不需要 16.6ms 就执行能执行完，但是也要等到下一帧渲染，此时也没有计算布局(Layout 阶段 )，也没有绘制(Paint 阶段)。 一个典型的帧（Frame）大致包括以下阶">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://march-wind.github.io/img/chrome.png">
 <meta property="article:published_time" content="2023-12-26T10:08:36.000Z">
-<meta property="article:modified_time" content="2025-11-03T10:12:20.116Z">
+<meta property="article:modified_time" content="2025-11-04T03:24:30.205Z">
 <meta property="article:author" content="Liu Zhiyang">
 <meta property="article:tag" content="浏览器">
 <meta name="twitter:card" content="summary_large_image">
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k 字
+          1.6k 字
         
       </span>
     
@@ -240,7 +240,7 @@
         
         
         
-          13 分钟
+          14 分钟
         
       </span>
     
@@ -283,7 +283,7 @@
               <div class="markdown-body">
                 
                 <h3 id="机制">机制</h3>
-<p>浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。</p>
+<p>浏览器按帧(Frame)驱动的渲染机制，一帧时间大概 16.6ms，每隔 16.6ms 屏幕刷新一次，如果有大量计算或者大量节点绘制，超过 16.6ms 时间，就会产生掉帧情况。如果只插入一个简单的 span，肯定不需要 16.6ms 就执行能执行完，但是也要等到下一帧渲染，此时也没有计算布局(Layout 阶段 )，也没有绘制(Paint 阶段)。</p>
 <p>一个典型的帧（Frame）大致包括以下阶段：</p>
 <table>
 <thead>
@@ -450,9 +450,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/11/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81%E6%B8%90%E8%BF%9B%E6%AD%A5%E9%AA%A4/" title="阅读源码步骤">
+                      <a href="/2024/01/10/React%20Scheduler/" title="React Scheduler">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">阅读源码步骤</span>
+                        <span class="hidden-mobile">React Scheduler</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -460,8 +460,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/11/20/React-Schedule/" title="React Schedule">
-                        <span class="hidden-mobile">React Schedule</span>
+                      <a href="/2023/11/20/React-Schedule/" title="React Schedule源码阅读">
+                        <span class="hidden-mobile">React Schedule源码阅读</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
