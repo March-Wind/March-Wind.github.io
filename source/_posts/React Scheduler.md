@@ -28,6 +28,7 @@ scheduleUpdateOnFiber
 
       设置完调度后，执行同步更新(flushSyncWorkAcrossRoots_impl),此时scheduler并没有调度完成，只是设置调度。要等一个宏任务回调执行。
 
+entangleTransitionUpdate(root, queue, lane);
 ```
 
 ```
@@ -126,3 +127,7 @@ scheduleCallback 就是 unstable_scheduleCallback 函数
 
 此时进来的任务都是要立即渲染的，进行 Fiber 渲染(performWorkOnRoot),甚至 commit.
 渲染完之后，再次执行当前 Root 的调度(scheduleTaskForRootDuringMicrotask)
+
+### 渲染阶段
+
+从 performWorkOnRoot(root, lanes, forceSync);这里开始
