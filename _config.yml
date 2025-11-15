@@ -124,5 +124,5 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/March-Wind/March-Wind.github.io.git
+  repo: git@github.com:March-Wind/March-Wind.github.io.git
   branch: master
