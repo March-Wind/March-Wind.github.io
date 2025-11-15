@@ -19,16 +19,16 @@
   <meta name="author" content="Liu Zhiyang">
   <meta name="keywords" content="">
   
-    <meta name="description" content="useState 后的链路 12345678910111213141516171819dispatchSetStatedispatchSetStateInternal 创建更新对象 Update ,还会判断最后一次值和当前值是否一致，如果一致，跳过渲染，不一致的话enqueueConcurrentHookUpdate 增加到临时队列，后续会增加到 Fiber.queue.pending 上，sch">
+    <meta name="description" content="回顾 前面经过一个微任务之后，进行批量更新收集，然后再经过一个宏任务调度器进行调度。再往下就是 render 阶段，生成新的 Fiber 树。 scheduler 调度的函数是 Task.callback 也就是 performWorkOnRootViaSchedulerTask 函数，在 Root 上执行任务。然后就会走到 performWorkOnRoot 执行 render 阶段，然后再次调">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React Scheduler">
-<meta property="og:url" content="https://march-wind.github.io/2024/01/10/React%20Scheduler/index.html">
+<meta property="og:title" content="React render阶段">
+<meta property="og:url" content="https://march-wind.github.io/2024/02/27/React%20render%E9%98%B6%E6%AE%B5/index.html">
 <meta property="og:site_name" content="March的博客">
-<meta property="og:description" content="useState 后的链路 12345678910111213141516171819dispatchSetStatedispatchSetStateInternal 创建更新对象 Update ,还会判断最后一次值和当前值是否一致，如果一致，跳过渲染，不一致的话enqueueConcurrentHookUpdate 增加到临时队列，后续会增加到 Fiber.queue.pending 上，sch">
+<meta property="og:description" content="回顾 前面经过一个微任务之后，进行批量更新收集，然后再经过一个宏任务调度器进行调度。再往下就是 render 阶段，生成新的 Fiber 树。 scheduler 调度的函数是 Task.callback 也就是 performWorkOnRootViaSchedulerTask 函数，在 Root 上执行任务。然后就会走到 performWorkOnRoot 执行 render 阶段，然后再次调">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://march-wind.github.io/img/react-logo.png">
-<meta property="article:published_time" content="2024-01-10T11:54:06.000Z">
-<meta property="article:modified_time" content="2025-11-15T05:23:45.302Z">
+<meta property="article:published_time" content="2024-02-27T08:07:36.000Z">
+<meta property="article:modified_time" content="2025-11-15T06:22:45.203Z">
 <meta property="article:author" content="Liu Zhiyang">
 <meta property="article:tag" content="React">
 <meta name="twitter:card" content="summary_large_image">
@@ -36,7 +36,7 @@
   
   
   
-  <title>React Scheduler - March的博客</title>
+  <title>React render阶段 - March的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="React Scheduler"></span>
+            <span id="subtitle" data-typed-text="React render阶段"></span>
           
         </div>
 
@@ -217,8 +217,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-01-10 19:54" pubdate>
-          2024年1月10日 晚上
+        <time datetime="2024-02-27 16:07" pubdate>
+          2024年2月27日 下午
         </time>
       </span>
     
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          990 字
+          430 字
         
       </span>
     
@@ -240,7 +240,7 @@
         
         
         
-          9 分钟
+          4 分钟
         
       </span>
     
@@ -277,84 +277,20 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">React Scheduler</h1>
+            <h1 id="seo-header">React render阶段</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="useState-后的链路">useState 后的链路</h3>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">dispatchSetState</span><br><span class="hljs-keyword"></span><br><span class="hljs-keyword">dispatchSetStateInternal </span>创建更新对象 Update ,还会判断最后一次值和当前值是否一致，如果一致，跳过渲染，不一致的话<br><br>enqueueConcurrentHookUpdate 增加到临时队列，后续会增加到 Fiber.queue.pending 上，<br><br><span class="hljs-keyword">scheduleUpdateOnFiber</span><br><span class="hljs-keyword"></span>  标记 Root 有更新<br>  处理 Suspense：如果正在等待数据，中断当前渲染<br>  处理渲染阶段更新：如果在 render 中触发更新（不推荐），特殊处理<br>  <span class="hljs-keyword">scheduleImmediateRootScheduleTask </span>微任务回调，去执行processRootScheduleInMicrotask<br><br>  processRootScheduleInMicrotask(一次click事件中可能调用多次setState，但是只会执行一次微任务回调，也就是processRootScheduleInMicrotask，从而实现了批处理)<br>      为每个Root执行<span class="hljs-keyword">scheduler调度(scheduleTaskForRootDuringMicrotask),也就是创建Scheduler </span>Task对象放进timerQueue或者taskQueue去执行。<br><br><br>      设置完调度后，执行同步更新(flushSyncWorkAcrossRoots_impl),此时<span class="hljs-keyword">scheduler并没有调度完成，只是设置调度。要等一个宏任务回调执行。</span><br><span class="hljs-keyword"></span><br>entangleTransitionUpdate(root, queue, lane);<br></code></pre></td></tr></table></figure>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs markdown">processRootScheduleInMicrotask<br><br>  处理饥饿的任务，等太久的任务，超时了，就标记为饥饿任务，从而在下一次调度中提升优先级 markStarvedLanesAsExpired(root, currentTime);<br><br>  计算这一批要处理的lanes getNextLanes<br><br><span class="hljs-code">      同步任务，不新增scheduler任务，由微任务最后的flushSyncWorkAcrossRoots_impl函数执行。</span><br><span class="hljs-code"></span><br><span class="hljs-code">      非同步任务：</span><br><span class="hljs-code">          取最高优先级的lane作为callback的优先级，</span><br><span class="hljs-code">          取消旧 callback，</span><br><span class="hljs-code">          将lane 优先级映射成 scheduler 优先级(userBlocking/normal/idle),</span><br><span class="hljs-code">          通过scheduleCallback注册scheduler task，</span><br><span class="hljs-code">          callback为performWorkOnRootViaSchedulerTask</span><br><span class="hljs-code"></span><br><span class="hljs-code">      返回本次任务的最高优先级的lane。</span><br><span class="hljs-code"></span><br></code></pre></td></tr></table></figure>
-<p>上面异步任务(非同步任务)调用</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">const newCallbackNode = <span class="hljs-keyword">scheduleCallback(</span><br><span class="hljs-keyword"></span>  <span class="hljs-keyword">schedulerPriorityLevel,</span><br><span class="hljs-keyword"></span>  performWorkOnRootViaSchedulerTask.<span class="hljs-keyword">bind(null, </span>root),<br>);<br></code></pre></td></tr></table></figure>
-<p>scheduleCallback 就是 unstable_scheduleCallback 函数</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs scss">指定要延迟执行的任务执行 <span class="hljs-built_in">requestHostTimeout</span>(handleTimeout, startTime - currentTime); 一定时间过去后，还是调用<span class="hljs-built_in">requestHostCallback</span>();<br><br>否则执行一个宏任务回调 <span class="hljs-built_in">requestHostCallback</span>();<br></code></pre></td></tr></table></figure>
-<h3 id="Scheduler-调度器">Scheduler 调度器</h3>
-<blockquote>
-<p>React Fiber 将任务拆分成小任务，Scheduler 就是调度这些单元任务的调度器。</p>
-</blockquote>
-<h3 id="核心职责">核心职责</h3>
-<ol>
-<li>🎯 任务调度：管理若干个不同优先级的任务</li>
-<li>⏱️ 时间切片：执行 5ms 时间的若干个单元任务，超过时间，就交给 commit 阶段，以及浏览器事件。</li>
-<li>📊 优先级管理：高优先级的先执行，每个单元任务都有优先级，通常对应着不同的超时时间，优先时间紧急的任务，即使一开始时间不紧急的任务，但是被多个时间紧急耽误了之后，自身的超级时间也在减少，而变得紧急，减少的就是等待的时间。</li>
-<li>🔄 可中断恢复：执行 5ms 后交给给浏览器，等待下一帧，继续执行若干个任务。</li>
-</ol>
-<h3 id="优先级">优先级</h3>
-<table>
-<thead>
-<tr>
-<th>scheduler 优先级名称</th>
-<th>scheduler 优先级数字</th>
-<th>超时时间</th>
-<th>使用场景</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>immediatePriority</td>
-<td>1</td>
-<td>-1</td>
-<td>ImmediatePriority 基本只用于内部兼容旧环境（setImmediate、MessageChannel 缺失时）。例如 flushSync、useSyncExternalStore、内部事件(错误边界捕获/卸载组件)并没有走 scheduler 而是在 微任务阶段就立即执行了</td>
-</tr>
-<tr>
-<td>userBlockingPriority</td>
-<td>2</td>
-<td>250ms</td>
-<td>用户交互(点击、输入、滚动)</td>
-</tr>
-<tr>
-<td>normalPriority</td>
-<td>3</td>
-<td>5s</td>
-<td>一般更新(网络请求后状态更新)</td>
-</tr>
-<tr>
-<td>lowPriority</td>
-<td>4</td>
-<td>10s</td>
-<td>startTransition、Suspense、(useDeferredValue 不是 Scheduler 调度的任务，所以不在这里)</td>
-</tr>
-<tr>
-<td>IdlePriority</td>
-<td>5</td>
-<td>永不</td>
-<td>内部使用(比如 React DevTool、Profiler、预加载下一屏数据、Fiber GC)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="核心函数">核心函数</h3>
-<p><code>workLoop</code>:循环执行任务<br>
-<code>flushWork</code>:<br>
-<code>performWorkUntilDeadline</code><br>
-<code>schedulePerformWorkUntilDeadline</code></p>
-<h3 id="调度过程">调度过程</h3>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs 1c">            从延迟任务队列<span class="hljs-punctuation">(</span>timerQueue<span class="hljs-punctuation">)</span>中提取过期任务放进taskQueue<br><br>                      <span class="hljs-string">|</span><br>                      <span class="hljs-string">|</span><br>            从任务队列中<span class="hljs-punctuation">(</span>taskQueue中<span class="hljs-punctuation">)</span>中获取第一个任务<span class="hljs-punctuation">(</span>Task对象<span class="hljs-punctuation">)</span><br><br>                      <span class="hljs-string">|</span><br>                      <span class="hljs-string">|</span><br>            判断是否继续执行任务<span class="hljs-punctuation">(</span>是否终端<span class="hljs-punctuation">)</span><br><br>                      <span class="hljs-string">|       (1.当前任务没过期，过期的话，继续执行)</span><br>                      <span class="hljs-string">|       (2. 超过时间切片(5ms)`shouldYieldToHost()`)</span><br>                      <span class="hljs-string">|       (也就是说当然任务过期或者没超过5ms,都会继续执行)</span><br>            ┌────────┴─────────────────┐<br>            │                          │<br>            │                          │<br>            中断                      继续执行<br>            │                          │<br>            │                          │<br>交给浏览器去响应时间或者绘制页面       任务.callback为<span class="hljs-literal">null</span>是被取消了，直接从最小堆顶推出<br>                                  不为<span class="hljs-literal">null</span>，就执行callback，并且传入是否过期的标识<br><br></code></pre></td></tr></table></figure>
-<h3 id="callback-为-performWorkOnRootViaSchedulerTask">callback 为 performWorkOnRootViaSchedulerTask</h3>
-<p>此时进来的任务都是要立即渲染的，进行 Fiber 渲染(performWorkOnRoot),甚至 commit.<br>
-渲染完之后，再次执行当前 Root 的调度(scheduleTaskForRootDuringMicrotask)</p>
+                <h3 id="回顾">回顾</h3>
+<p>前面经过一个微任务之后，进行批量更新收集，然后再经过一个宏任务调度器进行调度。再往下就是 render 阶段，生成新的 Fiber 树。 scheduler 调度的函数是 Task.callback 也就是 performWorkOnRootViaSchedulerTask 函数，在 Root 上执行任务。然后就会走到 performWorkOnRoot 执行 render 阶段，然后再次调用 scheduleTaskForRootDuringMicrotask 执行调度。</p>
 <h3 id="渲染阶段">渲染阶段</h3>
-<p>从 performWorkOnRoot(root, lanes, forceSync);这里开始</p>
+<p>渲染阶段就是创建新的 Fiber 树，diff 就是比较新旧两个 Fiber 节点，来创新新的 Fiber 树的。当前页面的是 current 树，正在更新的是 workInProcess 树，两者通过 alternate 来指向对方。如果遇到更高优先级的任务，进行中断的话，就会清除 workInProcess,然后去构建高优先级任务的 Fiber 树；如果只是常规 5ms 检查，但是没有被高优先级任务打断，并不会清除 workInProcess 树，而是保留当前要执行的 Fiber。</p>
+<h3 id="实际场景">实际场景</h3>
+<ol>
+<li>多次输入，每次中断 startTransition，中断列表更新</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; useState, useTransition &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><br><span class="hljs-keyword">const</span> bigList = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(&#123; <span class="hljs-attr">length</span>: <span class="hljs-number">50000</span> &#125;, <span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> <span class="hljs-string">`Item <span class="hljs-subst">$&#123;i&#125;</span><span class="hljs-subst">$&#123;i % <span class="hljs-number">2</span> === <span class="hljs-number">0</span> ? <span class="hljs-string">&#x27;e&#x27;</span> : <span class="hljs-string">&#x27;o&#x27;</span>&#125;</span>`</span>);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">App1</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> [query, setQuery] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&#x27;&#x27;</span>);<br>  <span class="hljs-keyword">const</span> [filtered, setFiltered] = <span class="hljs-title function_">useState</span>(bigList);<br>  <span class="hljs-keyword">const</span> [isPending, startTransition] = <span class="hljs-title function_">useTransition</span>();<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleChange</span>(<span class="hljs-params">e</span>) &#123;<br>    <span class="hljs-keyword">const</span> value = e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>;<br>    <span class="hljs-title function_">setQuery</span>(value);<br><br>    <span class="hljs-comment">// 这是低优先级任务，会被中断</span><br>    <span class="hljs-title function_">startTransition</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> result = bigList.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item.<span class="hljs-title function_">includes</span>(value));<br>      <span class="hljs-title function_">setFiltered</span>(result);<br>      <span class="hljs-comment">// setQuery(1); // 这里是后执行，输入框就会变成1</span><br>      <span class="hljs-comment">// setQuery((prev) =&gt; prev + 1); // 这里是后执行，输入框就会变成query + 1</span><br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#123;query&#125;</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">&#123;handleChange&#125;</span> /&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">      &#123;isPending &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>计算中...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>&#125;</span><br><span class="language-xml"></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">        &#123;filtered.map((item) =&gt; (</span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;item&#125;</span>&gt;</span>&#123;item&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">        ))&#125;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -400,8 +336,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>React Scheduler</div>
-      <div>https://march-wind.github.io/2024/01/10/React Scheduler/</div>
+      <div>React render阶段</div>
+      <div>https://march-wind.github.io/2024/02/27/React render阶段/</div>
     </div>
     <div class="license-meta">
       
@@ -413,7 +349,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年1月10日</div>
+          <div>2024年2月27日</div>
         </div>
       
       
@@ -445,9 +381,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/27/React%20render%E9%98%B6%E6%AE%B5/" title="React render阶段">
+                      <a href="/2024/05/14/mongodb%E9%83%A8%E7%BD%B2/" title="mongodb在腾讯云部署和使用">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">React render阶段</span>
+                        <span class="hidden-mobile">mongodb在腾讯云部署和使用</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -455,8 +391,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/12/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/" title="浏览器渲染机制">
-                        <span class="hidden-mobile">浏览器渲染机制</span>
+                      <a href="/2024/01/10/React%20Scheduler/" title="React Scheduler">
+                        <span class="hidden-mobile">React Scheduler</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

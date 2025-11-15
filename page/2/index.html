@@ -229,6 +229,73 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/02/27/React%20render%E9%98%B6%E6%AE%B5/" target="_self">
+          <img src="/img/react-logo.png" srcset="/img/loading.gif" lazyload alt="React render阶段">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/27/React%20render%E9%98%B6%E6%AE%B5/" target="_self">
+          React render阶段
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/02/27/React%20render%E9%98%B6%E6%AE%B5/" target="_self">
+        <div>
+          回顾 前面经过一个微任务之后，进行批量更新收集，然后再经过一个宏任务调度器进行调度。再往下就是 render 阶段，生成新的 Fiber 树。 scheduler 调度的函数是 Task.callback 也就是 performWorkOnRootViaSchedulerTask 函数，在 Root 上执行任务。然后就会走到 performWorkOnRoot 执行 render 阶段，然后再次调
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-27 16:07" pubdate>
+              2024-02-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/React/" class="category-chain-item">React</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/React/">#React</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2024/01/10/React%20Scheduler/" target="_self">
           <img src="/img/react-logo.png" srcset="/img/loading.gif" lazyload alt="React Scheduler">
         </a>
@@ -245,7 +312,7 @@
       
       <a class="index-excerpt " href="/2024/01/10/React%20Scheduler/" target="_self">
         <div>
-          useState 后的链路 123456789101112131415161718dispatchSetStatedispatchSetStateInternal 创建更新对象 Update ,还会判断最后一次值和当前值是否一致，如果一致，跳过渲染，不一致的话enqueueConcurrentHookUpdate 增加到临时队列，后续会增加到 Fiber.queue.pending 上，sched
+          useState 后的链路 12345678910111213141516171819dispatchSetStatedispatchSetStateInternal 创建更新对象 Update ,还会判断最后一次值和当前值是否一致，如果一致，跳过渲染，不一致的话enqueueConcurrentHookUpdate 增加到临时队列，后续会增加到 Fiber.queue.pending 上，sch
         </div>
       </a>
 

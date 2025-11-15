@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://march-wind.github.io/img/react-logo.png">
 <meta property="article:published_time" content="2024-11-03T11:54:06.000Z">
-<meta property="article:modified_time" content="2025-11-10T04:49:51.848Z">
+<meta property="article:modified_time" content="2025-11-15T04:26:38.601Z">
 <meta property="article:author" content="Liu Zhiyang">
 <meta property="article:tag" content="React">
 <meta name="twitter:card" content="summary_large_image">
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          1.9k 字
         
       </span>
     
@@ -345,7 +345,7 @@ dependencies: Dependencies; //存放依赖的 Context 的链表。</p>
 </ol>
 <h3 id="diff-算法">diff 算法</h3>
 <p>按照新节点是单节点或多节点两种情况 diff。单节点 Diff,遍历旧节点链表，找到 key 相同并且 type 也相同或者 ElementType 相同的节点，如果找到就复用，并且删除其他兄弟节点，如果没有找到，删除旧的，创建新的。多节点 diff，同时遍历新旧两个链表，index=0 开始，找到 index 相等，key 也相等的 Fiber 就复用,遇到不相等的就跳出第一轮循环；然后看看新链表是否还有剩余，没剩余，就删除旧链表上的其他节点，有剩余的话，看就旧链表是否还有剩余，没有剩余，就直接创建新的剩余节点；如果旧链接也有剩余节点，那么把旧链表上的剩余节点整理整 Map 对象，遍历新链表从 Map 中看看能不能找到可复用的，找到就复用，找不到的就创建新的。多节点时，不写 key，会增加比较次数，影响性能。</p>
-<h3 id="性能优化">性能优化</h3>
+<h3 id="并发模式下-UI-一致性（Consistency）-如何保证-双缓冲机制">并发模式下 UI 一致性（Consistency） 如何保证(双缓冲机制)</h3>
 
                 
               </div>
